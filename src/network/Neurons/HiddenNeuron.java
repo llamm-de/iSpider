@@ -9,6 +9,13 @@ package network.Neurons;
  *
  * @author LammLukas
  */
-public class HiddenNeuron extends Neuron{
+public class HiddenNeuron implements Neuron{
+
+    @Override
+    public void processData(double input) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
 }

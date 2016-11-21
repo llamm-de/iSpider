@@ -9,6 +9,10 @@ package network.Neurons;
  *
  * @author LammLukas
  */
-public class InputNeuron extends Neuron{
+public class InputNeuron implements Neuron{
     
+    @Override
+    public void processData(double input){
+        
+    }
 }

@@ -9,10 +9,12 @@ package network.Neurons;
  *
  * @author LammLukas
  */
-public class OutputNeuron implements Neuron{
-    
+public class BiasNeuron implements Neuron{
+
     @Override
-    public void processData(double input){
-        
+    public void processData(double input) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+   
+    
 }
