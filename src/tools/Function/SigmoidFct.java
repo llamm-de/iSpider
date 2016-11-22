@@ -11,11 +11,65 @@ import java.lang.Math;
  *
  * @author LammLukas
  */
-public class SigmoidFct implements ScalarFunction1d{
+public class SigmoidFct extends DifferentiableFun implements ScalarFunction1d{
     
+    // Attributes
+    /**
+     * Coefficient for sigmoid function
+     */
+    public double k;
     
-    @Override
-    public double getValue(double input){
-        return 0.5*(1+ Math.tanh(0.5*input));
+    /**
+     * Constructor for given k
+     * @param k Coefficient
+     */
+    public SigmoidFct(double k) {
+        this.k = k;
     }
+    
+    /**
+     * General constructor.
+     * 
+     */
+    public SigmoidFct(){
+        this.k = 1;
+    }
+    
+    /**
+     * Computes value of function at given value
+     * @param value given value
+     * @return value of function
+     */    
+    @Override
+    public double getValue(double value){
+        return (1/(1 + Math.exp(-value*k)));
+    }
+    
+    /**
+     * Computes derivative of function at given value
+     * @param value given value
+     * @return derivative at given value
+     */
+    @Override
+    public double getDerivative(double value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Getter for k
+     * @return k
+     */
+    public double getK() {
+        return k;
+    }
+
+    /**
+     * Stter for k
+     * @param k 
+     */
+    public void setK(double k) {
+        this.k = k;
+    }
+    
+    
 }

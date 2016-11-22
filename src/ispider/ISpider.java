@@ -5,7 +5,9 @@
  */
 package ispider;
 
+import java.util.ArrayList;
 import network.Connections.*;
+import network.Layer.*;
 import tools.*;
 
 /**
@@ -20,8 +22,11 @@ public class ISpider {
     public static void main(String[] args) {
         
       
-        System.out.println();
-        
-    }
+     Layer layer = new Layer(1);
+     
+     layer.addNeurons(2);
+     
+     System.out.println(layer.getNeurons());
     
+}
 }
