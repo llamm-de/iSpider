@@ -10,7 +10,7 @@ import network.Neurons.*;
  *
  * @author LammLukas
  */
-public class HiddenLayer extends Layer{
+public class HiOutLayer extends Layer{
     
     @Override
     public void addNeurons(int numNeurons) {
@@ -22,7 +22,7 @@ public class HiddenLayer extends Layer{
 
     @Override
     public void removeNeurons() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
     
