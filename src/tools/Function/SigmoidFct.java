@@ -11,7 +11,7 @@ import java.lang.Math;
  *
  * @author LammLukas
  */
-public class SigmoidFct extends DifferentiableFun implements ScalarFunction1d{
+public class SigmoidFct extends DifferentiableFct implements ScalarFct{
     
     // Attributes
     /**

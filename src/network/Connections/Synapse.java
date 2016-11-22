@@ -14,20 +14,19 @@ import network.Neurons.Neuron;
 public class Synapse{
     
     // Attributes
-    private final int id;
     private final Neuron inNeuron;
     private final Neuron outNeuron;
     private double weight;
     
+    public double output;
+    
        
     /** Constructor
      * 
-     * @param id
      * @param inNeuron
      * @param outNeuron 
      */
-    public Synapse(int id, Neuron inNeuron, Neuron outNeuron) {
-        this.id = id;
+    public Synapse(Neuron inNeuron, Neuron outNeuron) {
         this.weight = Math.random();
         this.inNeuron = inNeuron;
         this.outNeuron = outNeuron;
@@ -36,21 +35,12 @@ public class Synapse{
     /** Computation of weighted result
      * 
      * @param input from inputneuron
-     * @return 
-     */
-    public double compWeightedRes(double input){
-        return input*weight;
+    */
+    public void compWeightedOutput(double input){
+        output = input*weight;
     }
     
-    /** Passes data from inputneuron to outputneuron
-     * 
-     * @param input 
-     */
-    public void passData(double input){
-        double output = this.compWeightedRes(input);
-        outNeuron.processData(output);
-        
-    }
+   
     
     /** Getter for Weight
      * 
@@ -68,15 +58,7 @@ public class Synapse{
         this.weight = weight;
     }
 
-    /** Getter for ID
-     * 
-     * @return 
-     */
-    public int getId() {
-        return id;
-    }
-
-    /** Getter for inputneuron
+        /** Getter for inputneuron
      * 
      * @return 
      */

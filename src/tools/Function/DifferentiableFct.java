@@ -9,7 +9,7 @@ package tools.Function;
  *
  * @author LammLukas
  */
-public abstract class DifferentiableFun implements ScalarFunction1d {
+public abstract class DifferentiableFct implements ScalarFct {
     
     /**
      * Computes value if function at given point 

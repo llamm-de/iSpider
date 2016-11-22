@@ -22,11 +22,7 @@ public class ISpider {
     public static void main(String[] args) {
         
       
-     Layer layer = new Layer(1);
-     
-     layer.addNeurons(2);
-     
-     System.out.println(layer.getNeurons());
+
     
 }
 }

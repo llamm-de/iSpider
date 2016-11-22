@@ -13,25 +13,20 @@ import java.util.ArrayList;
  *
  * @author LammLukas
  */
-public class Neuron {
+public abstract class Neuron {
    
     // Attributes
-    
-    /**
-     * Identificationsnumber for neuron.
-     */
-    private final int id;
-    
+       
     /**
      * Input and outputlinks.
      */
-    private ArrayList<Synapse> inSynapses;
-    private ArrayList<Synapse> outSynapses;
+    protected ArrayList<Synapse> inSynapses;
+    protected ArrayList<Synapse> outSynapses;
     
     /**
      * Activityfunction.
      */
-    private ScalarFunction1d activityFunction;
+    protected ScalarFct activityFunction;
     
     /**
      * Total input for the neuron. Calculated from all linkinputs.
@@ -43,33 +38,32 @@ public class Neuron {
      */
     protected double output = 0;
     
-    /**
-     * Constructor
-     * @param id Identificationnumber for neuron
-     */
-    public Neuron(int id) {
-        this.id = id;
-        this.activityFunction = new SigmoidFct();
         
-        // empty array to be filled with connections
-        this.inSynapses = new ArrayList<>();
-        this.outSynapses = new ArrayList<>();      
-    }
-    
     /**
-     * Adds new input synapse to field
+     * Adds new input synapse to inSynapses
+     * @param synapse synapse to be added
      */
-    public void addInputSynapse(){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addInputSynapse(Synapse synapse){
+        this.inSynapses.add(synapse);
     }
 
     /**
-     * Adds new output synapse to field
+     * Adds new output synapse to outSynapses of this object
+     * and to inSynapses of receiving neuron
+     * @param neuron neuron to be connected with
      */
-    public void addOutputSynapse(){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addOutputSynapse(Neuron neuron){
+        Synapse synapse = new Synapse(this, neuron);
+        this.outSynapses.add(synapse);
+        neuron.addInputSynapse(synapse);
     }
     
+    public boolean hasInputSynapses(){
+        return (this.inSynapses.size() > 0);
+    }
     
+    public boolean hasOutputSynapses(){
+        return (this.outSynapses.size() > 0);
+    }
     
 }
