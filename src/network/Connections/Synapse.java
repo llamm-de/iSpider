@@ -5,7 +5,7 @@
  */
 package network.Connections;
 
-import network.Neurons.Neuron;
+import network.Neurons.*;
 
 /**
  *

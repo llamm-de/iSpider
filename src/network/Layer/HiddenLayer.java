@@ -5,18 +5,19 @@
  */
 package network.Layer;
 
+import network.Neurons.*;
 /**
  *
  * @author LammLukas
  */
 public class HiddenLayer extends Layer{
-
-     
-    
     
     @Override
     public void addNeurons(int numNeurons) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i = 0; i < numNeurons; i++) {
+            this.neurons.add(new HiOutNeuron());
+        }
+                
     }
 
     @Override

@@ -20,6 +20,8 @@ public class HiOutNeuron extends Neuron {
     public HiOutNeuron() {
         this.inSynapses = new ArrayList<>();
         this.outSynapses = new ArrayList<>();
+        this.output = 0;
+        this.totalInput = 0;
     }
     
     /**

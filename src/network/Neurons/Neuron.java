@@ -31,12 +31,12 @@ public abstract class Neuron {
     /**
      * Total input for the neuron. Calculated from all linkinputs.
      */
-    protected double totalInput = 0;
+    protected double totalInput;
     
     /**
      * Output of neuron.
      */
-    protected double output = 0;
+    protected double output;
     
         
     /**
@@ -58,10 +58,18 @@ public abstract class Neuron {
         neuron.addInputSynapse(synapse);
     }
     
+    /**
+     * Shows wether neuron has inputsynapses or not
+     * @return boolean
+     */
     public boolean hasInputSynapses(){
         return (this.inSynapses.size() > 0);
     }
     
+    /**
+     * Shows wether neuron has outputsynapses or not
+     * @return boolean
+     */
     public boolean hasOutputSynapses(){
         return (this.outSynapses.size() > 0);
     }
