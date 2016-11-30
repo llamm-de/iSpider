@@ -14,39 +14,5 @@ import network.Connections.Synapse;
  */
 public class InputNeuron extends Neuron{
 
-    public InputNeuron() {
-        this.outSynapses = new ArrayList<>();
-        this.output = 0;
-        this.totalInput = 0;
-    }
-    
-    /**
-     * Sets inputvalue for inputnode
-     * @param input inputvalue
-     */
-    public void setInput(double input){
-        this.totalInput = input;
-    }
-
-    @Override
-    public boolean hasOutputSynapses() {
-        return super.hasOutputSynapses(); 
-    }
-
-    @Override
-    public boolean hasInputSynapses() {
-        return false;
-    }
-
-    @Override
-    public void addOutputSynapse(Neuron neuron) {
-        super.addOutputSynapse(neuron); 
-    }
-
-    @Override
-    public void addInputSynapse(Synapse synapse) {
-        //DO NOTHING!!!
-    }
-    
-    
+        
 }

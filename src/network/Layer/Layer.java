@@ -6,35 +6,100 @@
 package network.Layer;
 
 import network.Neurons.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 /**
- *
+ * Layerclass
+ * Represents a layer of neurons in specific kind of neural network
  * @author LammLukas
  */
-public abstract class Layer {
+public class Layer {
     
      /**
      * Neurons in this layer
      */
-    protected ArrayList<Neuron> neurons;
+    protected LinkedList<Neuron> neurons;
+
+    /**
+     * Empty Constructor
+     */
+    public Layer() {
+        this.neurons = new LinkedList<Neuron>();
+        this.neurons.add(new BiasNeuron());
+    } 
     
     /**
-     * Adds neurons to layer
+     * Constructor with given number of neurons
      * @param numNeurons 
      */
-    public abstract void addNeurons(int numNeurons);
+    public Layer(int numNeurons, String neuronType) {
+        this.neurons = new LinkedList<Neuron>();
+        this.neurons.add(new BiasNeuron());
+        this.addNeurons(numNeurons, neuronType);
+    }
+       
+    
+    /**
+     * Adds a number of new neurons to layer
+     * @param numNeurons 
+     */
+    public void addNeurons(int numNeurons, String neuronType){
+        for (int i = 0; i < numNeurons; i++) {
+            if(neuronType == "InputNeuron"){
+                this.neurons.add(new InputNeuron());
+            }
+            else if(neuronType == "OutputNeuron"){
+                this.neurons.add(new OutputNeuron());
+            }
+            else {
+                this.neurons.add(new Neuron());
+            }
+        }
+    }
+    
+    /**
+     * Adds specific neuron to layer
+     * 
+     * @param neuron 
+     */
+    public void addSingleNeuron(Neuron neuron){
+        if(!this.neurons.contains(neuron)){
+            this.neurons.add(neuron);
+        }
+    }
     
         
     /**
-     * Removes neurons from layer
+     * Removes neuron from layer by index of neuron
+     * @param index
      */
-    public abstract void removeNeurons();
+    public void removeNeuron(int index){
+        this.neurons.remove(index);
+    }
+    
+    /**
+     * Removes single neuron from from layer by object itself
+     * @param neuron 
+     */
+    public void removeSingleNeuron(Neuron neuron){
+        if(this.neurons.contains(neuron)){
+            this.neurons.remove(neuron);
+        }
+    }
+    
+    /**
+     * Removes all neurons from Layer
+     */
+    public void removeAllNeurons(){
+        if(!this.neurons.isEmpty()){
+            this.neurons.clear();
+        }
+    }
 
     /**
      * Getter for neurons
      * @return 
      */
-    public ArrayList<Neuron> getNeurons() {
+    public LinkedList<Neuron> getNeurons() {
         return neurons;
     }
 

@@ -70,8 +70,8 @@ public class Neuron {
      * - inputFunction: WeightedSum
      */
     public Neuron(){
-        this.inSynapses = new LinkedList<>();
-        this.outSynapses = new LinkedList<>();
+        this.inSynapses = new LinkedList<Synapse>();
+        this.outSynapses = new LinkedList<Synapse>();
         this.activityFunction= new SigmoidFct();
         this.inputFunction = new WeightedSumFct();
         this.activity = 0;
@@ -84,8 +84,8 @@ public class Neuron {
      * @param activityFunction 
      */
     public Neuron(ScalarFct activityFunction, InputFct inputFunction) {
-        this.inSynapses = new LinkedList<>();
-        this.outSynapses = new LinkedList<>();
+        this.inSynapses = new LinkedList<Synapse>();
+        this.outSynapses = new LinkedList<Synapse>();
         this.activityFunction = activityFunction;
         this.inputFunction = inputFunction;
         this.activity = 0;
@@ -101,9 +101,6 @@ public class Neuron {
         if(!this.hasInSynapseFrom(synapse.getInNeuron())){
             this.inSynapses.add(synapse);  
         }
-        else{
-            //Exception
-        }
     }
 
     /**
@@ -116,9 +113,6 @@ public class Neuron {
             Synapse synapse = new Synapse(this, neuron);
             this.outSynapses.add(synapse);
             neuron.addInputSynapse(synapse);
-        }
-        else{
-            //Exception
         }
     }
     
@@ -133,9 +127,6 @@ public class Neuron {
                 this.inSynapses.remove(index);
             }
         }
-        else{
-            //Isert exception
-        }
     }
     
     /**
@@ -149,9 +140,6 @@ public class Neuron {
                 this.inSynapses.remove(synapse);
             }
         }
-        else {
-            //Insert exceptioncode
-        }
     }
     
     /**
@@ -164,9 +152,6 @@ public class Neuron {
             if(this.outSynapses.contains(this.outSynapses.get(index))){
                 this.outSynapses.remove(index);
             }
-        }
-        else{
-            //Insert exceptioncode
         }
     }
 
@@ -182,9 +167,6 @@ public class Neuron {
             if(this.outSynapses.contains(synapse)){
                 this.outSynapses.remove(synapse);
             }
-        }
-        else{
-            //Isert exception
         }
     }
     

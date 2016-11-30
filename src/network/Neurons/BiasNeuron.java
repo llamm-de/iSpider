@@ -14,31 +14,6 @@ import java.util.ArrayList;
  */
 public class BiasNeuron extends Neuron{
      
-    public BiasNeuron() {
-        this.outSynapses = new ArrayList<>();
-        this.output = -1;
-    }
-    
-        
-    @Override
-    public boolean hasOutputSynapses() {
-        return super.hasOutputSynapses(); 
-    }
-
-    @Override
-    public boolean hasInputSynapses() {
-        return false;
-    }
-
-    @Override
-    public void addOutputSynapse(Neuron neuron) {
-        super.addOutputSynapse(neuron); 
-    }
-
-    @Override
-    public void addInputSynapse(Synapse synapse) {
-        //DO NOTHING!
-    }
     
     
 }

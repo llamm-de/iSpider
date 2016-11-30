@@ -49,12 +49,24 @@ public class Synapse{
     
           
     /** 
-     * Predefined Constructor
+     * Constructor with random weigth
      * @param inNeuron
      * @param outNeuron 
      */
     public Synapse(Neuron inNeuron, Neuron outNeuron) {
         this.weight = Math.random();
+        this.inNeuron = inNeuron;
+        this.outNeuron = outNeuron;        
+    }
+    
+    /**
+     * Constructor with predefined weight
+     * @param inNeuron
+     * @param outNeuron
+     * @param weight 
+     */
+     public Synapse(Neuron inNeuron, Neuron outNeuron, double weight) {
+        this.weight = weight;
         this.inNeuron = inNeuron;
         this.outNeuron = outNeuron;        
     }
