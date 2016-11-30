@@ -23,19 +23,19 @@
  */
 package tools.Function;
 
+import network.Neurons.*;
+
 /**
- * Identityfunction
- * has the value f(x) = 1 for every given value of x.
+ * Interface for Inputfunctions
+ * 
  * @author LammLukas
  */
-public class IdentityFct implements ScalarFct {
-
-      
+public interface InputFct {
     
-    @Override
-    public double getValue(double value) {
-        return value; 
-    }
-    
-    
+    /**
+     * Computes activity for neuron
+     * @param neuron
+     * @return 
+     */
+    public double getValue(Neuron neuron);
 }

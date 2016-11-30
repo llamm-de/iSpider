@@ -23,18 +23,30 @@
  */
 package tools.Function;
 
+import network.Neurons.*;
+import network.Connections.*;
+import java.util.LinkedList;
+
 /**
- * Identityfunction
- * has the value f(x) = 1 for every given value of x.
+ * WeightedSum Inputfunction
+ * Computes the weighted sum of the synapseinput for a single neuron
  * @author LammLukas
  */
-public class IdentityFct implements ScalarFct {
+public class WeightedSumFct implements InputFct{
 
-      
-    
+    /**
+     * Computes activity for given neuron
+     * @param neuron
+     * @return activity
+     */
     @Override
-    public double getValue(double value) {
-        return value; 
+    public double getValue(Neuron neuron){
+        LinkedList<Synapse> inSynapses = neuron.getInSynapses();
+        double activity = 0;
+        for (Synapse inSynapse : inSynapses) {
+            activity += inSynapse.signal * inSynapse.getWeight();
+        }
+        return activity;
     }
     
     
