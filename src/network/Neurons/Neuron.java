@@ -62,6 +62,11 @@ public class Neuron {
      * Output of neuron.
      */
     public double output;
+    
+    /**
+     * Inputvalue for inputneuron
+     */
+    public double input;
 
     /**
      * Constructor
@@ -276,5 +281,20 @@ public class Neuron {
         this.inputFunction = inputFunction;
     }
     
+    /**
+     * Setter for inputvalues
+     * @return 
+     */
+    public double getInput() {
+        return input;
+    }
+
+    /**
+     * Getter for inputvalues
+     * @param input 
+     */
+    public void setInput(double input) {
+        this.input = input;
+    }
     
 }

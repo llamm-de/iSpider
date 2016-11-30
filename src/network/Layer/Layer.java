@@ -41,24 +41,25 @@ public class Layer {
      * Empty Constructor
      */
     public Layer() {
-        this.neurons = new LinkedList<Neuron>();
-        this.neurons.add(new BiasNeuron());
+        this.neurons = new LinkedList<>();
+        
     } 
     
     /**
      * Constructor with given number of neurons
      * @param numNeurons 
+     * @param neuronType
      */
     public Layer(int numNeurons, String neuronType) {
-        this.neurons = new LinkedList<Neuron>();
-        this.neurons.add(new BiasNeuron());
+        this.neurons = new LinkedList<>();
         this.addNeurons(numNeurons, neuronType);
     }
        
     
     /**
-     * Adds a number of new neurons to layer
+     * Adds a number of new neurons of specified type to layer
      * @param numNeurons 
+     * @param neuronType
      */
     public void addNeurons(int numNeurons, String neuronType){
         for (int i = 0; i < numNeurons; i++) {

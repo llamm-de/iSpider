@@ -32,13 +32,8 @@ import tools.Function.*;
  * @author LammLukas
  */
 public class InputNeuron extends Neuron{
-    // Attributes
     
-    /**
-     * Inputvalue for inputneuron
-     */
-    public double input;
-    
+       
     /**
      * Constructor for InputNeuron
      */
@@ -64,27 +59,5 @@ public class InputNeuron extends Neuron{
     public void addInputSynapse(Synapse synapse) {
         //DO NOTHING!
     }
-
-    /**
-     * Setter for inputvalues
-     * @return 
-     */
-    public double getInput() {
-        return input;
-    }
-
-    /**
-     * Getter for inputvalues
-     * @param input 
-     */
-    public void setInput(double input) {
-        this.input = input;
-    }
     
-    
-    
-    
-    
-
-        
 }

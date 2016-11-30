@@ -21,26 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package tools.Function;
 
 /**
  *
  * @author LammLukas
  */
-public interface Network {
+public class HeavisideFct implements ScalarFct{
+
+    //Attributes
+    public double threshold;
+
+    /**
+     * Constructor
+     * with threshold
+     * @param threshold 
+     */
+    public HeavisideFct(double threshold) {
+        this.threshold = threshold;
+    }
     
     /**
-     * Assebler for neuronal network
+     * Constructor 
+     * with predefined threshold of value 0
      */
-    public void assembleNet();
+    public HeavisideFct(){
+        this.threshold = 0;
+    }
     
-    /**
-     * Solver for network
-     */
-    public void solve();
+    @Override
+    public double getValue(double value) {
+        if(value < threshold){
+            return 0;
+        } else {
+            return 1;
+        }
+        
+    }
     
-    /**
-     * Trains the neuronal network
-     */
-    public void trainNet();
+    
 }
