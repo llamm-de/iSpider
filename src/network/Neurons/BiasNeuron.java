@@ -22,7 +22,7 @@ public class BiasNeuron extends Neuron{
         
     @Override
     public boolean hasOutputSynapses() {
-        return super.hasOutputSynapses(); //To change body of generated methods, choose Tools | Templates.
+        return super.hasOutputSynapses(); 
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BiasNeuron extends Neuron{
 
     @Override
     public void addOutputSynapse(Neuron neuron) {
-        super.addOutputSynapse(neuron); //To change body of generated methods, choose Tools | Templates.
+        super.addOutputSynapse(neuron); 
     }
 
     @Override

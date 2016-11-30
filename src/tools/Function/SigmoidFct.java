@@ -8,7 +8,7 @@ package tools.Function;
 import java.lang.Math;
 
 /**
- *
+ * Class for computation of a sigmoidfunction including its derivative
  * @author LammLukas
  */
 public class SigmoidFct extends DifferentiableFct implements ScalarFct{
@@ -52,7 +52,7 @@ public class SigmoidFct extends DifferentiableFct implements ScalarFct{
      */
     @Override
     public double getDerivative(double value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.getValue(value)*(1-this.getValue(value));
     }
 
     /**
@@ -64,7 +64,7 @@ public class SigmoidFct extends DifferentiableFct implements ScalarFct{
     }
 
     /**
-     * Stter for k
+     * Setter for k
      * @param k 
      */
     public void setK(double k) {
