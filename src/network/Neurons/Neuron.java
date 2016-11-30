@@ -74,8 +74,7 @@ public class Neuron {
         this.outSynapses = new LinkedList<Synapse>();
         this.activityFunction= new SigmoidFct();
         this.inputFunction = new WeightedSumFct();
-        this.activity = 0;
-        this.output = 0;
+        
     }
     
     /**
@@ -88,8 +87,7 @@ public class Neuron {
         this.outSynapses = new LinkedList<Synapse>();
         this.activityFunction = activityFunction;
         this.inputFunction = inputFunction;
-        this.activity = 0;
-        this.output = 0;
+        
     }
     
        
@@ -245,4 +243,38 @@ public class Neuron {
         }
         return false;
     }
+
+    /**
+     * Getter for activityfunction
+     * @return 
+     */
+    public ScalarFct getActivityFunction() {
+        return activityFunction;
+    }
+
+    /**
+     * setter for activityfunction
+     * @param activityFunction 
+     */
+    public void setActivityFunction(ScalarFct activityFunction) {
+        this.activityFunction = activityFunction;
+    }
+
+    /**
+     * getter forinputfunction
+     * @return 
+     */
+    public InputFct getInputFunction() {
+        return inputFunction;
+    }
+
+    /**
+     * setter for inputfunction
+     * @param inputFunction 
+     */
+    public void setInputFunction(InputFct inputFunction) {
+        this.inputFunction = inputFunction;
+    }
+    
+    
 }

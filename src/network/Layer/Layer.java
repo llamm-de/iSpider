@@ -47,9 +47,6 @@ public class Layer {
             if(neuronType == "InputNeuron"){
                 this.neurons.add(new InputNeuron());
             }
-            else if(neuronType == "OutputNeuron"){
-                this.neurons.add(new OutputNeuron());
-            }
             else {
                 this.neurons.add(new Neuron());
             }
