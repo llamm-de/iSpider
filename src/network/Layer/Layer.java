@@ -43,32 +43,26 @@ public class Layer {
     public Layer() {
         this.neurons = new LinkedList<>();
         
-    } 
+    }     
     
     /**
-     * Constructor with given number of neurons
+     * Adds a number of new inputneurons to inputlayer
      * @param numNeurons 
-     * @param neuronType
      */
-    public Layer(int numNeurons, String neuronType) {
-        this.neurons = new LinkedList<>();
-        this.addNeurons(numNeurons, neuronType);
+    public void addInputNeurons(int numNeurons){
+        for (int i = 0; i < numNeurons; i++) {
+            this.neurons.add(new InputNeuron());
+        }
     }
-       
     
     /**
      * Adds a number of new neurons of specified type to layer
      * @param numNeurons 
      * @param neuronType
      */
-    public void addNeurons(int numNeurons, String neuronType){
+    public void addNeurons(int numNeurons){
         for (int i = 0; i < numNeurons; i++) {
-            if(neuronType == "InputNeuron"){
-                this.neurons.add(new InputNeuron());
-            }
-            else {
-                this.neurons.add(new Neuron());
-            }
+            this.neurons.add(new Neuron());
         }
     }
     

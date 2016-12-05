@@ -57,10 +57,10 @@ public class OrTestFixedWeights {
         BiasNeuron bias = new BiasNeuron();
         
         //Add neurons to layers
-        inLayer.addNeurons(2, "InputNeuron");
+        inLayer.addInputNeurons(2);
         LinkedList<Neuron> inNeurons = inLayer.getNeurons();
         
-        outLayer.addNeurons(1, "OutputNeuron");
+        outLayer.addNeurons(1);
         LinkedList<Neuron> outNeurons = outLayer.getNeurons();
         
         //Add synaptic connecions and set weights

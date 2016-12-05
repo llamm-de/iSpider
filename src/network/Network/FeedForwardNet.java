@@ -31,10 +31,10 @@ import network.Connections.*;
 
 
 /**
- *
+ * Parentclass for Feedforwardnetwork
  * @author LammLukas
  */
-public class FeedForwardNet implements Network{
+public abstract class FeedForwardNet{
     
     //Attributes
     /**
@@ -55,7 +55,7 @@ public class FeedForwardNet implements Network{
     /**
      * Number of hidden layers for network
      */
-    protected int numHiddenLayers;
+    protected int numLayers;
     
     /**
      * Array of inputdata
@@ -75,92 +75,40 @@ public class FeedForwardNet implements Network{
     /**
      * BiasNeuron
      */
-    private BiasNeuron bias;
+    protected BiasNeuron bias;
     
     
     /**
-     * Constructor
-     * with variable learningrule
-     * @param numInputNeurons
-     * @param numOutputNeurons
-     * @param numHiddenLayers
-     * @param learningRule 
+     * Adding layers to network
      */
-    public FeedForwardNet(int numInputNeurons, int numOutputNeurons, int numHiddenLayers, LearningRule learningRule) {
-        this.layers = new LinkedList<>();
-        this.inputData = new double[numInputNeurons];
-        this.outputData = new double[numOutputNeurons];
-        this.numInputNeurons = numInputNeurons;
-        this.numOutputNeurons = numOutputNeurons;
-        this.numHiddenLayers = numHiddenLayers;
-        this.learningRule = learningRule;
-    }
-    
-    /**
-     * Constructor
-     * with predefined learningrule as backpropagation
-     * @param numInputNeurons
-     * @param numOutputNeurons
-     * @param numHiddenLayers
-     */
-    public FeedForwardNet(int numInputNeurons, int numOutputNeurons, int numHiddenLayers) {
-        this.layers = new LinkedList<>();
-        this.inputData = new double[numInputNeurons];
-        this.outputData = new double[numOutputNeurons];
-        this.numInputNeurons = numInputNeurons;
-        this.numOutputNeurons = numOutputNeurons;
-        this.numHiddenLayers = numHiddenLayers;
-        this.learningRule = new Backpropagation();
-    }
-    
-    
-    @Override
-    public void assembleNet() {
-        //Create layers and fill with neurons
-            //Inputlayer
-            this.layers.add(new Layer(numInputNeurons, "InputNeuron"));
-            
-            //Hidden layers
-            for (int i = 0; i < numHiddenLayers; i++) {
-                this.layers.add(new Layer(numInputNeurons, "HiddenNeurons"));
-            }
-            //Outputlayer
-            this.layers.add(new Layer(numOutputNeurons, "OutputNeuron"));
-                
-        //Add biasneuron
-        this.bias = new BiasNeuron();
-        
-        //Make connections
-        int numLayers = this.layers.size();
-        for (int i = 0; i < (numLayers-1); i++) {
-            Layer currentLayer = layers.get(i);
-            Layer nextLayer = layers.get(i+1);
-            LinkedList<Neuron> currentNeurons = currentLayer.getNeurons();
-            LinkedList<Neuron> nextNeurons = nextLayer.getNeurons();
-            for (int j = 0; j < currentNeurons.size(); j++) {
-                Neuron currentNeuron = currentNeurons.get(j);
-                bias.addOutputSynapse(currentNeuron);
-                for(int k = 0; k < nextNeurons.size(); k++){
-                    Neuron nextNeuron = nextNeurons.get(k);
-                    currentNeuron.addOutputSynapse(nextNeuron);
-                }
-            }
-            
-            
+    public void addLayers(){
+        for (int i = 0; i < numLayers; i++) {
+            layers.add(new Layer());            
         }
-        
-                
     }
-
-    @Override
-    public void solve() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void trainNet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  
+    /**
+     * Adds single layer at specified position
+     * @param layer
+     * @param position 
+     */
+    public void addSingleLayer(Layer layer, int position){
+        layers.add(position, layer);
     }
     
+    /**
+     * Adds single layer right before outputlayer
+     * @param layer 
+     */
+    public void addSingleLayer(Layer layer){
+        layers.add((numLayers-1), layer);
+    }
     
+    /**
+     * Removes specific layer from network
+     */
+    public void removeLayer(Layer layer){
+        layers.remove(layer);
+    }
+   
 }
