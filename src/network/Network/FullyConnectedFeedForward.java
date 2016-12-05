@@ -34,7 +34,7 @@ import network.Connections.Synapse;
  *
  * @author LammLukas
  */
-public class FullyConnectedFeedForward extends FeedForwardNet implements Network{
+public class FullyConnectedFeedForward extends FeedForwardNet{
 
     /**
      * Constructor 

@@ -34,7 +34,7 @@ import network.Connections.*;
  * Parentclass for Feedforwardnetwork
  * @author LammLukas
  */
-public abstract class FeedForwardNet{
+public abstract class FeedForwardNet implements Network{
     
     //Attributes
     /**
@@ -76,6 +76,15 @@ public abstract class FeedForwardNet{
      * BiasNeuron
      */
     protected BiasNeuron bias;
+
+    @Override
+    public abstract void assembleNet();
+
+    @Override
+    public abstract void solve();
+        
+    @Override
+    public abstract void trainNet();   
     
     
     /**
