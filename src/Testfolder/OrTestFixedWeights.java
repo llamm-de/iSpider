@@ -40,8 +40,8 @@ public class OrTestFixedWeights {
         
         //Initialize input and output
         double[] input = new double[2];
-        input[0] = 1;
-        input[1] = 1;
+        input[0] = 0;
+        input[1] = 0;
         double output = 0;
         
         System.out.println("Input:");

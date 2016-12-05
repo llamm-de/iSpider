@@ -23,15 +23,133 @@
  */
 package network.Network;
 
+import java.util.LinkedList;
+import network.Layer.*;
+import network.Training.*;
+import network.Neurons.*;
+import network.Connections.*;
+
+
 /**
  *
  * @author LammLukas
  */
 public class FeedForwardNet implements Network{
-
+    
+    //Attributes
+    /**
+     * List of layers in network
+     */
+    LinkedList<Layer> layers;
+    
+    /**
+     * Number of inputneurons for network
+     */
+    protected int numInputNeurons;
+    
+    /**
+     * number of outputneurons for network
+     */
+    protected int numOutputNeurons;
+    
+    /**
+     * Number of hidden layers for network
+     */
+    protected int numHiddenLayers;
+    
+    /**
+     * Array of inputdata
+     */
+    public double[] inputData;
+    
+    /**
+     * Array of outputdata
+     */
+    public double[] outputData;
+    
+    /**
+     * Learning rule for Trainingalgorithm of network
+     */
+    protected LearningRule learningRule;
+    
+    /**
+     * BiasNeuron
+     */
+    private BiasNeuron bias;
+    
+    
+    /**
+     * Constructor
+     * with variable learningrule
+     * @param numInputNeurons
+     * @param numOutputNeurons
+     * @param numHiddenLayers
+     * @param learningRule 
+     */
+    public FeedForwardNet(int numInputNeurons, int numOutputNeurons, int numHiddenLayers, LearningRule learningRule) {
+        this.layers = new LinkedList<>();
+        this.inputData = new double[numInputNeurons];
+        this.outputData = new double[numOutputNeurons];
+        this.numInputNeurons = numInputNeurons;
+        this.numOutputNeurons = numOutputNeurons;
+        this.numHiddenLayers = numHiddenLayers;
+        this.learningRule = learningRule;
+    }
+    
+    /**
+     * Constructor
+     * with predefined learningrule as backpropagation
+     * @param numInputNeurons
+     * @param numOutputNeurons
+     * @param numHiddenLayers
+     */
+    public FeedForwardNet(int numInputNeurons, int numOutputNeurons, int numHiddenLayers) {
+        this.layers = new LinkedList<>();
+        this.inputData = new double[numInputNeurons];
+        this.outputData = new double[numOutputNeurons];
+        this.numInputNeurons = numInputNeurons;
+        this.numOutputNeurons = numOutputNeurons;
+        this.numHiddenLayers = numHiddenLayers;
+        this.learningRule = new Backpropagation();
+    }
+    
+    
     @Override
     public void assembleNet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Create layers and fill with neurons
+            //Inputlayer
+            this.layers.add(new Layer(numInputNeurons, "InputNeuron"));
+            
+            //Hidden layers
+            for (int i = 0; i < numHiddenLayers; i++) {
+                this.layers.add(new Layer(numInputNeurons, "HiddenNeurons"));
+            }
+            //Outputlayer
+            this.layers.add(new Layer(numOutputNeurons, "OutputNeuron"));
+                
+        //Add biasneuron
+        this.bias = new BiasNeuron();
+        
+        //Make connections
+        int numLayers = this.layers.size();
+        for (int i = 0; i < (numLayers-1); i++) {
+            Layer currentLayer = layers.get(i);
+            Layer nextLayer = layers.get(i+1);
+            LinkedList<Neuron> currentNeurons = currentLayer.getNeurons();
+            LinkedList<Neuron> nextNeurons = nextLayer.getNeurons();
+            for (int j = 0; j < currentNeurons.size(); j++) {
+                Neuron currentNeuron = currentNeurons.get(j);
+                bias.addOutputSynapse(currentNeuron);
+                for(int k = 0; k < nextNeurons.size(); k++){
+                    Neuron nextNeuron = nextNeurons.get(k);
+                    currentNeuron.addOutputSynapse(nextNeuron);
+                }
+            }
+            
+            
+        }
+        
+                
     }
 
     @Override
