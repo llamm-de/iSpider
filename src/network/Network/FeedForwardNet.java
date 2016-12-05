@@ -164,6 +164,12 @@ public abstract class FeedForwardNet{
     public LinkedList<Layer> getLayers() {
         return layers;
     }
+
+    public BiasNeuron getBias() {
+        return bias;
+    }
+    
+    
     
     
    

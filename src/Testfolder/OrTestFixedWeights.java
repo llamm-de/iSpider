@@ -54,15 +54,29 @@ public class OrTestFixedWeights {
         FullyConnectedFeedForward fullyNet = new FullyConnectedFeedForward(2, 1, 2);
         fullyNet.assembleNet();
 
-        //Set synaptic weights
+        //set inputdata
+        fullyNet.setInputData(input);
+        //Set synaptic weights and set activityfunction to identity
         LinkedList<Layer> layers = fullyNet.getLayers();
         Layer inputLayer = layers.getFirst();
         LinkedList<Neuron> neurons = inputLayer.getNeurons();
         for (Neuron neuron : neurons) {
             LinkedList<Synapse> synapses = neuron.getOutSynapses();
             for (Synapse synapse : synapses) {
-                synapse.setWeight(0.5);
+                synapse.setWeight(1);
             }
+        }
+        Layer outputLayer = layers.getLast();
+        LinkedList<Neuron> outNeurons = outputLayer.getNeurons();
+        for (Neuron outNeuron : outNeurons) {
+            outNeuron.setActivityFunction(new HeavisideFct());
+        }
+        
+        //Set biasweight
+        BiasNeuron bias = fullyNet.getBias();
+        LinkedList<Synapse> synapses = bias.getOutSynapses();
+        for (Synapse synapse : synapses) {
+            synapse.setWeight(-1);
         }
         
         //Solve problem
@@ -71,7 +85,11 @@ public class OrTestFixedWeights {
         output = fullyNet.outputData;
         
         System.out.println("Output:");
-        System.out.println(output);
+        for (int i = 0; i < output.length; i++) {
+            System.out.println(output[i]);
+            
+        }
+        
     }
     
 }

@@ -86,9 +86,9 @@ public class FullyConnectedFeedForward extends FeedForwardNet implements Network
             if(j == 1){
                 layer.addInputNeurons(numInputNeurons);
             }else if(j == (numLayers-1)){
-                layer.addNeurons(numOutputNeurons);
-            }else{
                 layer.addNeurons(numInputNeurons);
+            }else{
+                layer.addNeurons(numOutputNeurons);
             }
             j++;
         }
@@ -99,7 +99,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet implements Network
             Layer currentLayer = layers.get(i);
             LinkedList<Neuron> currentNeurons = currentLayer.getNeurons();
             //Check for in- and outputlayer
-            if(i <= (numLayers-1)){
+            if(i < (numLayers-1)){
                 Layer nextLayer = layers.get(i+1);
                 LinkedList<Neuron> nextNeurons = nextLayer.getNeurons();
                 //Create connection to all neurons of next layer and biasneuron
@@ -124,6 +124,12 @@ public class FullyConnectedFeedForward extends FeedForwardNet implements Network
 
     @Override
     public void solve() {
+        //fire bias neuron
+        LinkedList<Synapse> biasSynapses = bias.getOutSynapses();
+        for (Synapse biasSynapse : biasSynapses) {
+            biasSynapse.signal = bias.output;
+        }
+        //Solve layer by layer
         if(inputData.length == numInputNeurons){
             for (Layer layer : layers) {        
                 LinkedList<Neuron> neurons = layer.getNeurons();
