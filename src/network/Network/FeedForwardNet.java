@@ -106,9 +106,67 @@ public abstract class FeedForwardNet{
     
     /**
      * Removes specific layer from network
+     * @param layer
      */
     public void removeLayer(Layer layer){
         layers.remove(layer);
     }
+
+    //Getter and Setter
+    public int getNumInputNeurons() {
+        return numInputNeurons;
+    }
+
+    public void setNumInputNeurons(int numInputNeurons) {
+        this.numInputNeurons = numInputNeurons;
+    }
+
+    public int getNumOutputNeurons() {
+        return numOutputNeurons;
+    }
+
+    public void setNumOutputNeurons(int numOutputNeurons) {
+        this.numOutputNeurons = numOutputNeurons;
+    }
+
+    public int getNumLayers() {
+        return numLayers;
+    }
+
+    public void setNumLayers(int numLayers) {
+        this.numLayers = numLayers;
+    }
+
+    public double[] getInputData() {
+        return inputData;
+    }
+
+    public void setInputData(double[] inputData) {
+        this.inputData = inputData;
+    }
+
+    public double[] getOutputData() {
+        return outputData;
+    }
+
+    public void setOutputData(double[] outputData) {
+        this.outputData = outputData;
+    }
+
+    public LearningRule getLearningRule() {
+        return learningRule;
+    }
+
+    public void setLearningRule(LearningRule learningRule) {
+        this.learningRule = learningRule;
+    }
+
+    public LinkedList<Layer> getLayers() {
+        return layers;
+    }
+    
+    
    
+    
+    
 }

@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import network.Training.*;
 import network.Layer.*;
 import network.Neurons.*;
+import network.Connections.Synapse;
 
 /**
  *
@@ -123,7 +124,33 @@ public class FullyConnectedFeedForward extends FeedForwardNet implements Network
 
     @Override
     public void solve() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(inputData.length == numInputNeurons){
+            for (Layer layer : layers) {        
+                LinkedList<Neuron> neurons = layer.getNeurons();
+                for (int j = 0; j < neurons.size(); j++) {
+                    Neuron currentNeuron = neurons.get(j);
+                    //Pass inputdata to inputneurons
+                    if(!currentNeuron.hasInputSynapses()){
+                        currentNeuron.input = this.inputData[j];
+                    }
+                    //Pass data through network and store in outputData
+                    if(currentNeuron.hasOutputSynapses()){
+                        currentNeuron.compActivity();
+                        currentNeuron.compOutput();
+                        LinkedList<Synapse> currOutSynapses = currentNeuron.getOutSynapses();
+                        for (Synapse currOutSynapse : currOutSynapses) {
+                            currOutSynapse.signal = currentNeuron.output;
+                        }
+                    }else{
+                        currentNeuron.compActivity();
+                        currentNeuron.compOutput();
+                        this.outputData[j] = currentNeuron.output;
+                    }
+                }
+            }
+        }else{
+        throw new UnsupportedOperationException("Not enough input arguments for network."); 
+        }
     }
 
     @Override
@@ -131,6 +158,4 @@ public class FullyConnectedFeedForward extends FeedForwardNet implements Network
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-
-    
 }

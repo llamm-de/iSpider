@@ -27,6 +27,7 @@ import network.Connections.*;
 import network.Neurons.*;
 import tools.Function.*;
 import network.Layer.*;
+import network.Network.*;
 
 import java.util.LinkedList;
 
@@ -42,75 +43,32 @@ public class OrTestFixedWeights {
         double[] input = new double[2];
         input[0] = 0;
         input[1] = 0;
-        double output = 0;
+        double output[];
         
         System.out.println("Input:");
         System.out.println(input[0]);
         System.out.println(input[1]);
         System.out.println("");
         
-        //Initialize layers
-        Layer inLayer = new Layer();
-        Layer outLayer = new Layer();
-        
-        //Add bias neuron
-        BiasNeuron bias = new BiasNeuron();
-        
-        //Add neurons to layers
-        inLayer.addInputNeurons(2);
-        LinkedList<Neuron> inNeurons = inLayer.getNeurons();
-        
-        outLayer.addNeurons(1);
-        LinkedList<Neuron> outNeurons = outLayer.getNeurons();
-        
-        //Add synaptic connecions and set weights
-        for (Neuron outNeuron : outNeurons) {
-            //Add bias synapse
-            bias.addOutputSynapse(outNeuron);
-                        
-            //Add synapses to inputneurons
-            for (Neuron inNeuron : inNeurons) {
-                inNeuron.addOutputSynapse(outNeuron);
-            }
-                        
-            //Set activityfunction for outputneurons
-            outNeuron.setActivityFunction(new HeavisideFct());
-            
-            //Set synaptic weights
-            LinkedList<Synapse> synapses = outNeuron.getInSynapses();
+        //Initialize network
+        FullyConnectedFeedForward fullyNet = new FullyConnectedFeedForward(2, 1, 2);
+        fullyNet.assembleNet();
+
+        //Set synaptic weights
+        LinkedList<Layer> layers = fullyNet.getLayers();
+        Layer inputLayer = layers.getFirst();
+        LinkedList<Neuron> neurons = inputLayer.getNeurons();
+        for (Neuron neuron : neurons) {
+            LinkedList<Synapse> synapses = neuron.getOutSynapses();
             for (Synapse synapse : synapses) {
-                synapse.setWeight(1);
-            }
-            
-        }
-        
-        //Set bias weight and fire biasneuron
-        LinkedList<Synapse> biasSynapse = bias.getOutSynapses();
-        for (Synapse synapse : biasSynapse) {
-            synapse.setWeight(-1);
-            synapse.signal = bias.output;
-        }
-        
-        //Set inputdata and process data
-        int i = 0;
-        for (Neuron inNeuron : inNeurons){
-            inNeuron.setInput(input[i]);
-            //Update iterator            
-            i++;
-            
-            inNeuron.compActivity();
-            inNeuron.compOutput();
-            
-            LinkedList<Synapse> synapses = inNeuron.getOutSynapses();
-            for (Synapse outSynapse : synapses) {
-                outSynapse.signal = inNeuron.output;
+                synapse.setWeight(0.5);
             }
         }
-        for (Neuron outNeuron : outNeurons){
-            outNeuron.compActivity();
-            outNeuron.compOutput();
-            output = outNeuron.output;
-        }
+        
+        //Solve problem
+        fullyNet.solve();
+        
+        output = fullyNet.outputData;
         
         System.out.println("Output:");
         System.out.println(output);
