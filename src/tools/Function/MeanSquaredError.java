@@ -21,32 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package tools.Function;
+
+import network.Network.Network;
+import network.Training.*;
 
 /**
  *
  * @author LammLukas
  */
-public interface Network {
+public class MeanSquaredError implements ErrorFunction{
+
+    @Override
+    public double compError(Network net, TrainingSet set) {
+        double[] output = net.getOutput();
+        int index = output.length;
+        double[] error = new double[index];
+        for (TrainingPattern pattern : set.patterns) {
+            
+        }
+       return 1; 
+    }
     
-    /**
-     * Assebler for neuronal network
-     */
-    public void assembleNet();
     
-    /**
-     * Solver for network
-     */
-    public void solve();
-    
-    /**
-     * Trains the neuronal network
-     */
-    public void trainNet();
-    
-    /**
-     * Getter for Outputdata
-     * @return 
-     */
-    public double[] getOutput();
 }

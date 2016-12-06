@@ -21,32 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package tools.Function;
+
+import network.Network.Network;
+import network.Training.TrainingSet;
 
 /**
  *
  * @author LammLukas
  */
-public interface Network {
+public class EuklidError implements ErrorFunction{
+
+    @Override
+    public double compError(Network net, TrainingSet set) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    /**
-     * Assebler for neuronal network
-     */
-    public void assembleNet();
     
-    /**
-     * Solver for network
-     */
-    public void solve();
-    
-    /**
-     * Trains the neuronal network
-     */
-    public void trainNet();
-    
-    /**
-     * Getter for Outputdata
-     * @return 
-     */
-    public double[] getOutput();
 }

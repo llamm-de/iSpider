@@ -21,32 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package tools.Function;
+
+import network.Network.*;
+import network.Training.TrainingSet;
 
 /**
- *
+ * Interface for errorfunction
  * @author LammLukas
  */
-public interface Network {
+public interface ErrorFunction {
     
     /**
-     * Assebler for neuronal network
+     * Computes error for use in training a neuronal network
+     * @return Error as scalar double
      */
-    public void assembleNet();
-    
-    /**
-     * Solver for network
-     */
-    public void solve();
-    
-    /**
-     * Trains the neuronal network
-     */
-    public void trainNet();
-    
-    /**
-     * Getter for Outputdata
-     * @return 
-     */
-    public double[] getOutput();
+    public double compError(Network net, TrainingSet set);
 }

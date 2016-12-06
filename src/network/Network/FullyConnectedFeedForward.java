@@ -164,4 +164,11 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public double[] getOutput() {
+        return this.outputData;
+    }
+    
+    
+
 }

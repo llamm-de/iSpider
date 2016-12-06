@@ -21,32 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package network.Training;
 
 /**
- *
+ * Class for a pattern of trainingdata
  * @author LammLukas
  */
-public interface Network {
+public class TrainingPattern {
+    
+    //Attributes
+    /**
+     * Inputexamples 
+     */
+    public double[] p;
     
     /**
-     * Assebler for neuronal network
+     * Teachinginput 
+     * Array of expected outputs
      */
-    public void assembleNet();
+    public double[] t;
+
     
     /**
-     * Solver for network
+     * Constructor for trainingpattern
+     * @param p
+     * @param t 
      */
-    public void solve();
+    public TrainingPattern(double[] p, double[] t) {
+        this.p = p;
+        this.t = t;
+    }
     
-    /**
-     * Trains the neuronal network
-     */
-    public void trainNet();
     
-    /**
-     * Getter for Outputdata
-     * @return 
-     */
-    public double[] getOutput();
+    
 }

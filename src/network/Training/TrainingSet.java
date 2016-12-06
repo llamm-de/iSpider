@@ -21,32 +21,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Network;
+package network.Training;
+
+import java.util.LinkedList;
+import java.util.Random;
 
 /**
- *
+ * Class for a set of trainingpatterns
  * @author LammLukas
  */
-public interface Network {
+public class TrainingSet {
     
+    //Attributes
     /**
-     * Assebler for neuronal network
+     * List of trainingspatterns
      */
-    public void assembleNet();
+    public LinkedList<TrainingPattern> patterns;
     
     /**
-     * Solver for network
+     * Generator for random numbers
      */
-    public void solve();
-    
+    Random random = new Random();
+
     /**
-     * Trains the neuronal network
+     * Empty Constructor
      */
-    public void trainNet();
+    public TrainingSet() {
+        this.patterns = new LinkedList<>();
+    }
+
+    /**
+     * Constructor with predefines patterns
+     * @param patterns 
+     */
+    public TrainingSet(LinkedList<TrainingPattern> patterns) {
+        this.patterns = patterns;
+    }
     
     /**
-     * Getter for Outputdata
+     * Gets random pattern from set
      * @return 
      */
-    public double[] getOutput();
+    public TrainingPattern getRandom(){
+        //Get size of set and generate random number in range
+        int numPatterns = patterns.size();
+        int index = random.nextInt(numPatterns);
+        
+        return patterns.get(index);
+    }
+    
+    
+    /**
+     * Adds pattern to set
+     * @param pattern 
+     */
+    public void addPattern(TrainingPattern pattern){
+        this.patterns.add(pattern);
+    }
+    
+    /**
+     * Removes pattern from set
+     * @param pattern 
+     */
+    public void remPattern(TrainingPattern pattern){
+        this.patterns.remove(pattern);
+    }
+    
+    
 }
