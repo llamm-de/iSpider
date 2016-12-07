@@ -27,16 +27,54 @@ import network.Network.*;
 import network.Training.TrainingPattern;
 
 /**
- * Interface for errorfunction
+ * Abstract class for errorfunctions
  * @author LammLukas
  */
 public abstract class ErrorFunction {
     
     /**
-     * Computes error for use in training a neuronal network
+     * Computes mean-squared-error for use in training a neuronal network
      * @return Error as scalar double
      */
-    public abstract double compError(Network net, TrainingPattern pattern);
+    public static double compMeanSquaredError(Network net, TrainingPattern pattern){
+        //Initialize variables
+        double[] output = net.getOutput();
+        double error = 0;
+        //Compute squaredsum of outputvalues and trainingOutput
+        error = ErrorFunction.compSquaredSum(pattern.t, output);
+        
+        return 0.5*error;
+    }
+    
+    /**
+     * Computes euklid-error for use in training a neuronal network
+     * @return Error as scalar double
+     */
+    public static double compEuklidError(Network net, TrainingPattern pattern){
+        //Initialize variables
+        double[] output = net.getOutput();
+        double error = 0;
+        //Compute squaredsum of outputvalues and trainingOutput
+        error = ErrorFunction.compSquaredSum(pattern.t, output);
+        
+        return Math.sqrt(error);
+    }
+    
+    /**
+     * Computes root-mean-squared-error for use in training a neuronal network
+     * @return Error as scalar double
+     */
+    public static double compRMSError(Network net, TrainingPattern pattern){
+        //Initialize variables
+        double[] output = net.getOutput();
+        double error = 0;
+        //Compute squaredsum of outputvalues and trainingOutput
+        error = ErrorFunction.compSquaredSum(pattern.t, output);
+        
+        return Math.sqrt(error/output.length);
+    }
+    
+    
     
     /**
      * Computes the negative squared sum of all elements in a and b
@@ -44,11 +82,16 @@ public abstract class ErrorFunction {
      * @param b
      * @return result
      */
-    public final double compSquaredSum(double[] a, double[] b){
+    public static double compSquaredSum(double[] a, double[] b){
         double result = 0;
-        for (int i = 0; i < a.length; i++) {
+        //Check for dimensionmismatch
+        if(a.length == b.length){
+            for (int i = 0; i < a.length; i++) {
                 result += Math.pow(b[i] - a[i], 2);
             }
+        }else{
+            throw new UnsupportedOperationException("Dimension mismatch.");
+        }
         return result;
     }
 }
