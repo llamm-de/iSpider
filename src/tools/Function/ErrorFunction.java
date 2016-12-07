@@ -24,7 +24,7 @@
 package tools.Function;
 
 import network.Network.*;
-import network.Training.TrainingSet;
+import network.Training.TrainingPattern;
 
 /**
  * Interface for errorfunction
@@ -36,5 +36,5 @@ public interface ErrorFunction {
      * Computes error for use in training a neuronal network
      * @return Error as scalar double
      */
-    public double compError(Network net, TrainingSet set);
+    public double compError(Network net, TrainingPattern pattern);
 }

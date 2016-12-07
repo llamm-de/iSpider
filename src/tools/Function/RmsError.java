@@ -24,17 +24,35 @@
 package tools.Function;
 
 import network.Network.Network;
-import network.Training.TrainingSet;
+import network.Training.TrainingPattern;
 
 /**
- *
+ * Class for Root-Mean-Squared error
  * @author LammLukas
  */
 public class RmsError implements ErrorFunction{
 
+    /**
+     * Computes root-mean-squared error
+     * @param net Network for which error should be computed
+     * @param pattern TrainingPattern for which error should be computed
+     * @return Error
+     */
     @Override
-    public double compError(Network net, TrainingSet set) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double compError(Network net, TrainingPattern pattern) {
+        //Initialize variables
+        double[] output = net.getOutput();
+        double error = 0;
+        //Check for dimension-match
+        if(output.length == pattern.t.length){
+            //Compute sum of outputvalues and trainingOutput
+            for (int i = 0; i < output.length; i++) {
+                error += Math.pow(pattern.t[i] - output[i], 2);
+            }
+        }else{        
+        throw new UnsupportedOperationException("Dimension mismatch. Length of trainingoutput is not equal to length of netoutput.");
+        }
+        return Math.sqrt(error/output.length);
     }
     
     

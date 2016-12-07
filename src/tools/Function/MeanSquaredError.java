@@ -27,20 +27,32 @@ import network.Network.Network;
 import network.Training.*;
 
 /**
- *
+ * Class for mean squared error
  * @author LammLukas
  */
 public class MeanSquaredError implements ErrorFunction{
 
+    /**
+     * Computes mean squared error
+     * @param net Network for which the error should becomputed
+     * @param pattern Trainingpattern for which the error should be computed
+     * @return Error
+     */
     @Override
-    public double compError(Network net, TrainingSet set) {
+    public double compError(Network net, TrainingPattern pattern) {
+        //Initialize variables
         double[] output = net.getOutput();
-        int index = output.length;
-        double[] error = new double[index];
-        for (TrainingPattern pattern : set.patterns) {
-            
+        double error = 0;
+        //Check for dimension-match
+        if(output.length == pattern.t.length){
+            //Compute sum of outputvalues and trainingOutput
+            for (int i = 0; i < output.length; i++) {
+                error += Math.pow(pattern.t[i] - output[i], 2);
+            }
+        }else{
+            throw new UnsupportedOperationException("Dimension mismatch. Length of trainingoutput is not equal to length of netoutput.");
         }
-       return 1; 
+        return 0.5*error;
     }
     
     

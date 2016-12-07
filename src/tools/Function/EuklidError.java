@@ -24,7 +24,7 @@
 package tools.Function;
 
 import network.Network.Network;
-import network.Training.TrainingSet;
+import network.Training.TrainingPattern;
 
 /**
  *
@@ -33,7 +33,7 @@ import network.Training.TrainingSet;
 public class EuklidError implements ErrorFunction{
 
     @Override
-    public double compError(Network net, TrainingSet set) {
+    public double compError(Network net, TrainingPattern pattern) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
