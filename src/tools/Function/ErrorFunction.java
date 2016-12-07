@@ -30,11 +30,25 @@ import network.Training.TrainingPattern;
  * Interface for errorfunction
  * @author LammLukas
  */
-public interface ErrorFunction {
+public abstract class ErrorFunction {
     
     /**
      * Computes error for use in training a neuronal network
      * @return Error as scalar double
      */
-    public double compError(Network net, TrainingPattern pattern);
+    public abstract double compError(Network net, TrainingPattern pattern);
+    
+    /**
+     * Computes the negative squared sum of all elements in a and b
+     * @param a
+     * @param b
+     * @return result
+     */
+    public final double compSquaredSum(double[] a, double[] b){
+        double result = 0;
+        for (int i = 0; i < a.length; i++) {
+                result += Math.pow(b[i] - a[i], 2);
+            }
+        return result;
+    }
 }

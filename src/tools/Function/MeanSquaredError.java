@@ -30,7 +30,7 @@ import network.Training.*;
  * Class for mean squared error
  * @author LammLukas
  */
-public class MeanSquaredError implements ErrorFunction{
+public class MeanSquaredError extends ErrorFunction{
 
     /**
      * Computes mean squared error
@@ -46,9 +46,7 @@ public class MeanSquaredError implements ErrorFunction{
         //Check for dimension-match
         if(output.length == pattern.t.length){
             //Compute sum of outputvalues and trainingOutput
-            for (int i = 0; i < output.length; i++) {
-                error += Math.pow(pattern.t[i] - output[i], 2);
-            }
+            error = this.compSquaredSum(pattern.t, output);
         }else{
             throw new UnsupportedOperationException("Dimension mismatch. Length of trainingoutput is not equal to length of netoutput.");
         }

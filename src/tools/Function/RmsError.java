@@ -30,7 +30,7 @@ import network.Training.TrainingPattern;
  * Class for Root-Mean-Squared error
  * @author LammLukas
  */
-public class RmsError implements ErrorFunction{
+public class RmsError extends ErrorFunction{
 
     /**
      * Computes root-mean-squared error
@@ -46,9 +46,7 @@ public class RmsError implements ErrorFunction{
         //Check for dimension-match
         if(output.length == pattern.t.length){
             //Compute sum of outputvalues and trainingOutput
-            for (int i = 0; i < output.length; i++) {
-                error += Math.pow(pattern.t[i] - output[i], 2);
-            }
+            error = this.compSquaredSum(pattern.t, output);
         }else{        
         throw new UnsupportedOperationException("Dimension mismatch. Length of trainingoutput is not equal to length of netoutput.");
         }

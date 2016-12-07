@@ -27,14 +27,30 @@ import network.Network.Network;
 import network.Training.TrainingPattern;
 
 /**
- *
+ * Class fo euklid error
  * @author LammLukas
  */
-public class EuklidError implements ErrorFunction{
+public class EuklidError extends ErrorFunction{
 
+    /**
+     * Computes Euklid error
+     * @param net Network for which the error should becomputed
+     * @param pattern Trainingpattern for which the error should be computed
+     * @return Error
+     */
     @Override
     public double compError(Network net, TrainingPattern pattern) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Initialize variables
+        double[] output = net.getOutput();
+        double error = 0;
+        //Check for dimension-match
+        if(output.length == pattern.t.length){
+            //Compute sum of outputvalues and trainingOutput
+            error = this.compSquaredSum(pattern.t, output);
+        }else{
+            throw new UnsupportedOperationException("Dimension mismatch. Length of trainingoutput is not equal to length of netoutput.");
+        }
+        return Math.sqrt(error);
     }
     
     
