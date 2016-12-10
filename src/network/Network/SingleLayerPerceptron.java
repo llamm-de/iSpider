@@ -21,48 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package tools.Function;
+package network.Network;
 
-import network.Network.*;
-import network.Training.TrainingPattern;
+import network.Training.*;
+import network.Layer.*;
+import network.Connections.*;
+import network.Neurons.*;
 
 /**
- * Abstract class for errorfunctions
+ *
  * @author LammLukas
  */
-public abstract class ErrorFunction {
-    
+public class SingleLayerPerceptron extends FullyConnectedFeedForward{
+
     /**
-     * Error to be computed
+     * Constructor with variable learningrule
+     * @param nInputNeurons
+     * @param nOutputNeurons
+     * @param learningRule 
      */
-    public double error;
-    
-    
-    /**
-     * Computes specific error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
-     */
-    public abstract double compError(double[] a, double[] b);
-      
-    
-    /**
-     * Computes the negative squared sum of all elements in a and b
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return result
-     */
-    protected static double compSquaredSum(double[] a, double[] b){
-        double result = 0;
-        //Check for dimensionmismatch
-        if(a.length == b.length){
-            for (int i = 0; i < a.length; i++) {
-                result += Math.pow(a[i] - b[i], 2);
-            }
-        }else{
-            throw new UnsupportedOperationException("Dimension mismatch.");
-        }
-        return result;
+    public SingleLayerPerceptron(int nInputNeurons, int nOutputNeurons, LearningRule learningRule) {
+        this.learningRule = learningRule;
+        this.numInputNeurons = nInputNeurons;
+        this.numOutputNeurons = nOutputNeurons;
+        this.numLayers = 2;
     }
+    
+    /**
+     * Constructor with predefined learningrule (Delta-Rule)
+     * @param nInputNeurons
+     * @param nOutputNeurons
+    */
+    public SingleLayerPerceptron(int nInputNeurons, int nOutputNeurons) {
+        this.learningRule = new DeltaRule();
+        this.numInputNeurons = nInputNeurons;
+        this.numOutputNeurons = nOutputNeurons;
+        this.numLayers = 2;
+    }
+    
+    
+    
+    
 }

@@ -23,10 +23,19 @@
  */
 package network.Training;
 
+import network.Network.Network;
+
 /**
  *
  * @author LammLukas
  */
 public class Backpropagation implements LearningRule{
+
+    @Override
+    public void applyRule(Network network, TrainingSet set) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
 }

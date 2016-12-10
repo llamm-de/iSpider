@@ -37,8 +37,16 @@ import network.Connections.Synapse;
 public class FullyConnectedFeedForward extends FeedForwardNet{
 
     /**
+     * Empty Constructor
+     */
+    public FullyConnectedFeedForward() {
+    }
+  
+    
+    /**
      * Constructor 
      * with predefined learningrule, set as backpropagation
+     * with predefined LearningType, set as Online
      * @param nInputNeurons
      * @param nOutputNeurons
      * @param nLayers 
@@ -51,11 +59,13 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.learningRule = new Backpropagation();
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
+        this.learningType = 1;
     }
     
     /**
      * Constructor
      * with variable learningrule
+     * with predefined LearningType, set as Online
      * @param nInputNeurons
      * @param nOutputNeurons
      * @param nLayers
@@ -69,6 +79,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.learningRule = learningRule;
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
+        this.learningType = 1;
     }
     
     @Override
@@ -168,6 +179,26 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     public double[] getOutput() {
         return this.outputData;
     }
+
+    @Override
+    public int getLearningtype() {
+        return 1;
+    }
+
+    @Override
+    public LinkedList<Neuron> getOutputNeurons() {
+        return this.layers.getLast().getNeurons();
+    }
+
+    @Override
+    public LinkedList<Neuron> getInputNeurons() {
+        return this.layers.getFirst().getNeurons();
+    }
+    
+    
+    
+    
+    
     
     
 

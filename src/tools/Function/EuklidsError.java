@@ -23,46 +23,23 @@
  */
 package tools.Function;
 
-import network.Network.*;
-import network.Training.TrainingPattern;
-
 /**
- * Abstract class for errorfunctions
+ * Class for euklids error
  * @author LammLukas
  */
-public abstract class ErrorFunction {
-    
+public class EuklidsError extends ErrorFunction {
+
     /**
-     * Error to be computed
-     */
-    public double error;
-    
-    
-    /**
-     * Computes specific error
+     * Computes euklids-error error
      * @param a double[] output
      * @param b double[] trainingInput
      * @return double error
      */
-    public abstract double compError(double[] a, double[] b);
-      
+    @Override
+    public double compError(double[] a, double[] b) {
+        this.error = ErrorFunction.compSquaredSum(a, b);
+        return Math.sqrt(error);
+    }    
     
-    /**
-     * Computes the negative squared sum of all elements in a and b
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return result
-     */
-    protected static double compSquaredSum(double[] a, double[] b){
-        double result = 0;
-        //Check for dimensionmismatch
-        if(a.length == b.length){
-            for (int i = 0; i < a.length; i++) {
-                result += Math.pow(a[i] - b[i], 2);
-            }
-        }else{
-            throw new UnsupportedOperationException("Dimension mismatch.");
-        }
-        return result;
-    }
+    
 }

@@ -21,48 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package tools.Function;
+package network.Training;
 
-import network.Network.*;
-import network.Training.TrainingPattern;
+import network.Network.Network;
 
 /**
- * Abstract class for errorfunctions
+ *
  * @author LammLukas
  */
-public abstract class ErrorFunction {
+public class DeltaRule implements LearningRule{
     
     /**
-     * Error to be computed
+     * Learning rate
      */
-    public double error;
-    
-    
+    private double learningRate;
+
     /**
-     * Computes specific error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
+     * empty Constructor
      */
-    public abstract double compError(double[] a, double[] b);
-      
-    
-    /**
-     * Computes the negative squared sum of all elements in a and b
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return result
-     */
-    protected static double compSquaredSum(double[] a, double[] b){
-        double result = 0;
-        //Check for dimensionmismatch
-        if(a.length == b.length){
-            for (int i = 0; i < a.length; i++) {
-                result += Math.pow(a[i] - b[i], 2);
-            }
-        }else{
-            throw new UnsupportedOperationException("Dimension mismatch.");
-        }
-        return result;
+    public DeltaRule() {
     }
+      
+    /**
+     * Constructor
+     * @param learningRate 
+     */
+    public DeltaRule(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    /**
+     * Applies rule to network
+     * @param network
+     * @param set
+     */
+    @Override
+    public void applyRule(Network network, TrainingSet set) {
+        
+    }
+
+    /**
+     * setter for private learningRate
+     * @param learningRate 
+     */
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+    
+    
+    
+    
+    
+    
+    
 }

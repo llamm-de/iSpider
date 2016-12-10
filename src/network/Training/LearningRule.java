@@ -23,10 +23,18 @@
  */
 package network.Training;
 
+import network.Network.*;
+
 /**
  *
  * @author LammLukas
  */
 public interface LearningRule {
-    
+
+    /**
+     * Applies Learningrule to network
+     * @param network
+     * @param set
+     */
+    public void applyRule(Network network, TrainingSet set);
 }

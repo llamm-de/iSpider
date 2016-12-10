@@ -73,6 +73,13 @@ public abstract class FeedForwardNet implements Network{
     protected LearningRule learningRule;
     
     /**
+     * LearningType
+     *  - 0: Offline
+     *  - 1: Online
+     */
+    protected int learningType;
+    
+    /**
      * BiasNeuron
      */
     protected BiasNeuron bias;
@@ -177,6 +184,22 @@ public abstract class FeedForwardNet implements Network{
     public BiasNeuron getBias() {
         return bias;
     }
+
+    @Override
+    public int getLearningtype(){
+        return learningType;
+    }
+
+    public void setLearningType(int learningType) {
+        this.learningType = learningType;
+    }
+
+    
+    
+        
+    
+    
+    
     
     
     

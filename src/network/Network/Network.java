@@ -23,6 +23,8 @@
  */
 package network.Network;
 
+import java.util.LinkedList;
+import network.Neurons.*;
 /**
  *
  * @author LammLukas
@@ -49,4 +51,28 @@ public interface Network {
      * @return 
      */
     public double[] getOutput();
+    
+    /**
+     * Getter for Learningtype
+     * @return 1: Online; 0: Offline 
+     */
+    public int getLearningtype();
+    
+    /**
+     * Setter for inputdata at network
+     * @param input Inputdata for network
+     */
+    public void setInputData(double[] input);
+    
+    /**
+     * Getter for outputneurons
+     * @return LinkedList with outputneurons
+     */
+    public LinkedList<Neuron> getOutputNeurons();
+    
+    /**
+     * Getter for inputneurons
+     * @return LinkedList
+     */
+    public LinkedList<Neuron> getInputNeurons();
 }

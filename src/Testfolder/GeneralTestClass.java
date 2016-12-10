@@ -21,48 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package tools.Function;
+package Testfolder;
 
 import network.Network.*;
-import network.Training.TrainingPattern;
-
 /**
- * Abstract class for errorfunctions
+ *
  * @author LammLukas
  */
-public abstract class ErrorFunction {
+public class GeneralTestClass {
     
-    /**
-     * Error to be computed
-     */
-    public double error;
-    
-    
-    /**
-     * Computes specific error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
-     */
-    public abstract double compError(double[] a, double[] b);
-      
-    
-    /**
-     * Computes the negative squared sum of all elements in a and b
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return result
-     */
-    protected static double compSquaredSum(double[] a, double[] b){
-        double result = 0;
-        //Check for dimensionmismatch
-        if(a.length == b.length){
-            for (int i = 0; i < a.length; i++) {
-                result += Math.pow(a[i] - b[i], 2);
-            }
-        }else{
-            throw new UnsupportedOperationException("Dimension mismatch.");
-        }
-        return result;
+    public static void main(String[] args) {
+        SingleLayerPerceptron slp = new SingleLayerPerceptron(2,1);
+        
+        System.out.println("");
     }
+    
 }

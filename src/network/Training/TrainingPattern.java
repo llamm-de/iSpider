@@ -44,8 +44,8 @@ public class TrainingPattern {
     
     /**
      * Constructor for trainingpattern
-     * @param p
-     * @param t 
+     * @param p Input
+     * @param t Teachinginput (expected Output)
      */
     public TrainingPattern(double[] p, double[] t) {
         this.p = p;

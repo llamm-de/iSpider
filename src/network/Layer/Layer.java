@@ -58,7 +58,6 @@ public class Layer {
     /**
      * Adds a number of new neurons of specified type to layer
      * @param numNeurons 
-     * @param neuronType
      */
     public void addNeurons(int numNeurons){
         for (int i = 0; i < numNeurons; i++) {
