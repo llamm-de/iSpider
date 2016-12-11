@@ -26,6 +26,7 @@ package network.Training;
 import network.Network.Network;
 import network.Neurons.*;
 import network.Connections.*;
+import tools.Function.*;
 
 import java.util.LinkedList;
 
@@ -37,6 +38,30 @@ import java.util.LinkedList;
 public class PerceptronRule implements LearningRule{
 
     /**
+     * Errorfunction
+     */
+    private ErrorFunction errorFunction;
+
+    /**
+     * Constructor
+     * with variable Errorfunction
+     * @param errorFunction 
+     */
+    public PerceptronRule(ErrorFunction errorFunction) {
+        this.errorFunction = errorFunction;
+    }
+
+    /**
+     * Constructor
+     * with predefined errorfunction as MeanSqaredError
+     */
+    public PerceptronRule() {
+        this.errorFunction = new MeanSquaredError();
+    }
+    
+    
+    
+    /**
      * Applies Rule to network
      * @param network
      * @param set
@@ -46,42 +71,45 @@ public class PerceptronRule implements LearningRule{
        
         LinkedList<Neuron> outputNeurons = network.getOutputNeurons();
         LinkedList<Neuron> inputNeurons = network.getInputNeurons();
+        double error = 1;
         
-        //Get random trainingpattern with input and teachingInput
-        TrainingPattern pattern = set.getRandom();
-        double[] input = pattern.p;
-        double[] teachingInput = pattern.t;
-        
-        //Set networks input and solve network for Input and get output
-        network.setInputData(input);
-        network.solve();
-                
-        //Compute Error
-        double error = 0;
-        
-        //Set weights
-        for (Neuron outputNeuron : outputNeurons) {
-            double output = outputNeuron.output;
-            if(output != teachingInput[outputNeurons.indexOf(outputNeuron)]){
-                if(output == 0){
-                    for (Neuron inputNeuron : inputNeurons) {
-                        LinkedList<Synapse> outSynapses = inputNeuron.getOutSynapses();
-                        for (Synapse outSynapse : outSynapses) {
-                            double newWeight = outSynapse.getWeight() + output;
-                            outSynapse.setWeight(newWeight);
+        while(0.01 < error){
+            //Get random trainingpattern with input and teachingInput
+            TrainingPattern pattern = set.getRandom();
+            double[] input = pattern.p;
+            double[] teachingInput = pattern.t;
+
+            //Set networks input and solve network for Input and get output
+            network.setInputData(input);
+            network.solve();
+            double[] output = network.getOutput();
+
+            //Compute Error
+            error = errorFunction.compError(output, teachingInput);
+
+            //Set weights
+            for (Neuron outputNeuron : outputNeurons) {
+                double singleOutput = outputNeuron.output;
+                if(singleOutput != teachingInput[outputNeurons.indexOf(outputNeuron)]){
+                    if(singleOutput == 0){
+                        for (Neuron inputNeuron : inputNeurons) {
+                            LinkedList<Synapse> outSynapses = inputNeuron.getOutSynapses();
+                            for (Synapse outSynapse : outSynapses) {
+                                double newWeight = outSynapse.getWeight() + singleOutput;
+                                outSynapse.setWeight(newWeight);
+                            }
                         }
-                    }
-                }else if(output == 1){
-                    for (Neuron inputNeuron : inputNeurons) {
-                        LinkedList<Synapse> outSynapses = inputNeuron.getOutSynapses();
-                        for (Synapse outSynapse : outSynapses) {
-                            double newWeight = outSynapse.getWeight() - output;
-                            outSynapse.setWeight(newWeight);
+                    }else if(singleOutput == 1){
+                        for (Neuron inputNeuron : inputNeurons) {
+                            LinkedList<Synapse> outSynapses = inputNeuron.getOutSynapses();
+                            for (Synapse outSynapse : outSynapses) {
+                                double newWeight = outSynapse.getWeight() - singleOutput;
+                                outSynapse.setWeight(newWeight);
+                            }
                         }
                     }
                 }
             }
-            
         }
     
         
