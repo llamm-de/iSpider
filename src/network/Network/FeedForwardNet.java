@@ -91,7 +91,7 @@ public abstract class FeedForwardNet implements Network{
     public abstract void solve();
         
     @Override
-    public abstract void trainNet();   
+    public abstract void trainNet(TrainingSet set);   
     
     
     /**

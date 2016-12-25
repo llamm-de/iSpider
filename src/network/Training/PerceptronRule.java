@@ -41,22 +41,53 @@ public class PerceptronRule implements LearningRule{
      * Errorfunction
      */
     private ErrorFunction errorFunction;
+    
+    
+    /**
+     * Minimal error
+     */
+    public double minError;
+    
+    /**
+     * Maximal iterations for algorithm
+     */
+    public int maxIter;
 
     /**
      * Constructor
      * with variable Errorfunction
      * @param errorFunction 
+     * @param minError
+     * @param maxIter
      */
-    public PerceptronRule(ErrorFunction errorFunction) {
+    public PerceptronRule(ErrorFunction errorFunction, double minError, int maxIter) {
         this.errorFunction = errorFunction;
+        this.minError = minError;
+        this.maxIter = maxIter;
     }
 
     /**
      * Constructor
      * with predefined errorfunction as MeanSqaredError
+     * @param minError
+     * @param maxIter
+     */
+    public PerceptronRule(double minError, int maxIter) {
+        this.errorFunction = new MeanSquaredError();
+        this.maxIter = maxIter;
+        this.minError = minError;
+    }
+    
+    /**
+     * Constructor
+     * with predefined errorfunction as MeanSqaredError
+     * @param minError
+     * @param maxIter
      */
     public PerceptronRule() {
         this.errorFunction = new MeanSquaredError();
+        this.maxIter = 1000000;
+        this.minError = 0.01;
     }
     
     
@@ -71,15 +102,16 @@ public class PerceptronRule implements LearningRule{
        
         LinkedList<Neuron> outputNeurons = network.getOutputNeurons();
         LinkedList<Neuron> inputNeurons = network.getInputNeurons();
-        double error = 1;
+        double error = Double.MAX_VALUE;
+        int iterator = 1;
         
-        while(0.01 < error){
+        while(this.minError < error && iterator < this.maxIter){
             //Get random trainingpattern with input and teachingInput
             TrainingPattern pattern = set.getRandom();
             double[] input = pattern.p;
             double[] teachingInput = pattern.t;
 
-            //Set networks input and solve network for Input and get output
+            //Set networks input, solve network for Input and get output
             network.setInputData(input);
             network.solve();
             double[] output = network.getOutput();
@@ -110,12 +142,32 @@ public class PerceptronRule implements LearningRule{
                     }
                 }
             }
+            iterator++;
         }
     
         
         
         
     }
+
+    //Getter and Setter
+    public double getMinError() {
+        return minError;
+    }
+
+    public void setMinError(double minError) {
+        this.minError = minError;
+    }
+
+    public int getMaxIter() {
+        return maxIter;
+    }
+
+    public void setMaxIter(int maxIter) {
+        this.maxIter = maxIter;
+    }
+    
+    
     
     
     

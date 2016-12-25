@@ -28,6 +28,8 @@ import network.Layer.*;
 import network.Connections.*;
 import network.Neurons.*;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author LammLukas
@@ -41,22 +43,30 @@ public class SingleLayerPerceptron extends FullyConnectedFeedForward{
      * @param learningRule 
      */
     public SingleLayerPerceptron(int nInputNeurons, int nOutputNeurons, LearningRule learningRule) {
+        this.layers = new LinkedList<>();
         this.learningRule = learningRule;
         this.numInputNeurons = nInputNeurons;
         this.numOutputNeurons = nOutputNeurons;
         this.numLayers = 2;
+        this.inputData = new double[numInputNeurons];
+        this.outputData = new double[numOutputNeurons];
+        this.learningType = 1;
     }
     
     /**
-     * Constructor with predefined learningrule (Delta-Rule)
+     * Constructor with predefined learningrule (Perceptron-Rule)
      * @param nInputNeurons
      * @param nOutputNeurons
     */
     public SingleLayerPerceptron(int nInputNeurons, int nOutputNeurons) {
-        this.learningRule = new DeltaRule();
+        this.layers = new LinkedList<>();
+        this.learningRule = new PerceptronRule();
         this.numInputNeurons = nInputNeurons;
         this.numOutputNeurons = nOutputNeurons;
         this.numLayers = 2;
+        this.inputData = new double[numInputNeurons];
+        this.outputData = new double[numOutputNeurons];
+        this.learningType = 1;
     }
     
     

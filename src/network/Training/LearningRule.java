@@ -26,7 +26,7 @@ package network.Training;
 import network.Network.*;
 
 /**
- *
+ * Interface for Learningrule
  * @author LammLukas
  */
 public interface LearningRule {

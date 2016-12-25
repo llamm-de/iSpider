@@ -85,9 +85,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     @Override
     public void assembleNet() {
         //Create layers
-        for (int i = 0; i < numLayers; i++) {
-            layers.add(new Layer());  
-        }
+       this.addLayers();
         
         //Create Neurons
         this.bias = new BiasNeuron();
@@ -171,8 +169,8 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     }
 
     @Override
-    public void trainNet() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void trainNet(TrainingSet set) {
+        this.learningRule.applyRule(this, set);
     }
 
     @Override
@@ -182,7 +180,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
 
     @Override
     public int getLearningtype() {
-        return 1;
+        return learningType;
     }
 
     @Override

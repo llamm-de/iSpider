@@ -25,6 +25,7 @@ package network.Network;
 
 import java.util.LinkedList;
 import network.Neurons.*;
+import network.Training.*;
 /**
  *
  * @author LammLukas
@@ -44,7 +45,7 @@ public interface Network {
     /**
      * Trains the neuronal network
      */
-    public void trainNet();
+    public void trainNet(TrainingSet set);
     
     /**
      * Getter for Outputdata
