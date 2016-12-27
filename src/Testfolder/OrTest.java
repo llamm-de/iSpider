@@ -65,8 +65,7 @@ public class OrTest {
         for (double d : input) {  
             System.out.println(d);
         }
-        SLP.setInputData(input);
-        SLP.solve();
+        SLP.solve(input);
         double[] output = SLP.getOutput();
         System.out.println("Outputdata:");
         for (double k : output) {  

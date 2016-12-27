@@ -59,7 +59,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.learningRule = new Backpropagation();
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
-        this.learningType = 1;
+        this.onlineLearning = true;
     }
     
     /**
@@ -79,7 +79,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.learningRule = learningRule;
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
-        this.learningType = 1;
+        this.onlineLearning = true;
     }
     
     @Override
@@ -132,7 +132,10 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     }
 
     @Override
-    public void solve() {
+    public void solve(double[] input) {
+        //set inputdata
+        this.setInputData(input);
+        
         //fire bias neuron
         LinkedList<Synapse> biasSynapses = bias.getOutSynapses();
         for (Synapse biasSynapse : biasSynapses) {
@@ -179,8 +182,8 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     }
 
     @Override
-    public int getLearningtype() {
-        return learningType;
+    public boolean isLearningOnline() {
+        return onlineLearning;
     }
 
     @Override

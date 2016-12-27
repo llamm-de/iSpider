@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import network.Layer.*;
 import network.Training.*;
 import network.Neurons.*;
-import network.Connections.*;
+//import network.Connections.*;
 
 
 /**
@@ -74,10 +74,10 @@ public abstract class FeedForwardNet implements Network{
     
     /**
      * LearningType
-     *  - 0: Offline
-     *  - 1: Online
+     *  - false: Offline
+     *  - true: Online
      */
-    protected int learningType;
+    protected boolean onlineLearning;
     
     /**
      * BiasNeuron
@@ -88,7 +88,7 @@ public abstract class FeedForwardNet implements Network{
     public abstract void assembleNet();
 
     @Override
-    public abstract void solve();
+    public abstract void solve(double[] input);
         
     @Override
     public abstract void trainNet(TrainingSet set);   
@@ -186,25 +186,12 @@ public abstract class FeedForwardNet implements Network{
     }
 
     @Override
-    public int getLearningtype(){
-        return learningType;
+    public boolean isLearningOnline(){
+        return onlineLearning;
     }
 
-    public void setLearningType(int learningType) {
-        this.learningType = learningType;
-    }
-
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-   
-    
+    public void setLearningType(boolean onlineLearning) {
+        this.onlineLearning = onlineLearning;
+    }   
     
 }

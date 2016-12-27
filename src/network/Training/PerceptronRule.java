@@ -81,8 +81,6 @@ public class PerceptronRule implements LearningRule{
     /**
      * Constructor
      * with predefined errorfunction as MeanSqaredError
-     * @param minError
-     * @param maxIter
      */
     public PerceptronRule() {
         this.errorFunction = new MeanSquaredError();
@@ -112,12 +110,11 @@ public class PerceptronRule implements LearningRule{
             double[] teachingInput = pattern.t;
 
             //Set networks input, solve network for Input and get output
-            network.setInputData(input);
-            network.solve();
+            network.solve(input);
             double[] output = network.getOutput();
 
             //Compute Error
-            error = errorFunction.compError(output, teachingInput);
+            error = errorFunction.compGlobalError(output, teachingInput);
 
             //Set weights
             for (Neuron outputNeuron : outputNeurons) {

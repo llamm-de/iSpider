@@ -36,9 +36,16 @@ public class RmsError extends ErrorFunction{
      * @return double error
      */
     @Override
-    public double compError(double[] a, double[] b) {
+    public double compGlobalError(double[] a, double[] b) {
         this.error = ErrorFunction.compSquaredSum(a, b);
         return Math.sqrt(error/a.length);
     }
+
+    @Override
+    public double compSingleError(double a, double b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
 }

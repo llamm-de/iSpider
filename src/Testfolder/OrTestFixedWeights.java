@@ -42,7 +42,7 @@ public class OrTestFixedWeights {
         //Initialize input and output
         double[] input = new double[2];
         input[0] = 0;
-        input[1] = 0;
+        input[1] = 1;
         double output[];
         
         System.out.println("Input:");
@@ -54,8 +54,7 @@ public class OrTestFixedWeights {
         FullyConnectedFeedForward fullyNet = new FullyConnectedFeedForward(2, 1, 2);
         fullyNet.assembleNet();
 
-        //set inputdata
-        fullyNet.setInputData(input);
+        
         //Set synaptic weights and set activityfunction to identity
         LinkedList<Layer> layers = fullyNet.getLayers();
         Layer inputLayer = layers.getFirst();
@@ -80,7 +79,7 @@ public class OrTestFixedWeights {
         }
         
         //Solve problem
-        fullyNet.solve();
+        fullyNet.solve(input);
         
         output = fullyNet.outputData;
         

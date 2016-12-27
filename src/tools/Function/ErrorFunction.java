@@ -23,8 +23,6 @@
  */
 package tools.Function;
 
-import network.Network.*;
-import network.Training.TrainingPattern;
 
 /**
  * Abstract class for errorfunctions
@@ -37,15 +35,21 @@ public abstract class ErrorFunction {
      */
     public double error;
     
-    
     /**
      * Computes specific error
      * @param a double[] output
      * @param b double[] trainingInput
      * @return double error
      */
-    public abstract double compError(double[] a, double[] b);
+    public abstract double compGlobalError(double[] a, double[] b);
       
+    /**
+     * Computes error for single neuron
+     * @param a double output
+     * @param b double trainingInput
+     * @return double error
+     */
+    public abstract double compSingleError(double a, double b);
     
     /**
      * Computes the negative squared sum of all elements in a and b

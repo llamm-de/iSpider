@@ -24,9 +24,7 @@
 package network.Network;
 
 import network.Training.*;
-import network.Layer.*;
-import network.Connections.*;
-import network.Neurons.*;
+
 
 import java.util.LinkedList;
 
@@ -50,7 +48,7 @@ public class SingleLayerPerceptron extends FullyConnectedFeedForward{
         this.numLayers = 2;
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
-        this.learningType = 1;
+        this.onlineLearning = true;
     }
     
     /**
@@ -66,7 +64,7 @@ public class SingleLayerPerceptron extends FullyConnectedFeedForward{
         this.numLayers = 2;
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
-        this.learningType = 1;
+        this.onlineLearning = true;
     }
     
     

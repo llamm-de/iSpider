@@ -33,14 +33,14 @@ import network.Training.*;
 public interface Network {
     
     /**
-     * Assebler for neuronal network
+     * Assembler for neuronal network
      */
     public void assembleNet();
     
     /**
      * Solver for network
      */
-    public void solve();
+    public void solve(double[] input);
     
     /**
      * Trains the neuronal network
@@ -55,9 +55,9 @@ public interface Network {
     
     /**
      * Getter for Learningtype
-     * @return 1: Online; 0: Offline 
+     * @return true: Online; false: Offline 
      */
-    public int getLearningtype();
+    public boolean isLearningOnline();
     
     /**
      * Setter for inputdata at network
