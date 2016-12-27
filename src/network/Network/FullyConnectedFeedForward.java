@@ -171,10 +171,6 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         }
     }
 
-    @Override
-    public void trainNet(TrainingSet set) {
-        this.learningRule.applyRule(this, set);
-    }
 
     @Override
     public double[] getOutput() {
