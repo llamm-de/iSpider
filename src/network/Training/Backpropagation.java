@@ -26,7 +26,8 @@ package network.Training;
 import network.Network.Network;
 
 /**
- *
+ * Class for Backpropagation of error.
+ * Implementation of interface LearningRule.
  * @author LammLukas
  */
 public class Backpropagation implements LearningRule{

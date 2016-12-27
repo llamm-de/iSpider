@@ -89,9 +89,18 @@ public abstract class FeedForwardNet implements Network{
 
     @Override
     public abstract void solve(double[] input);
-        
+     
+    /**
+     * Trains the network with data from a TrainingSet, visualizes results and error.
+     * @param set TrainingSet
+     */
     @Override
-    public abstract void trainNet(TrainingSet set);   
+    public void trainNet(TrainingSet set){
+        
+        //Apply learningRule
+        learningRule.applyRule(this, set);
+        
+    }
     
     
     /**
