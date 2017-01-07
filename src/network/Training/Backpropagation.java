@@ -23,7 +23,7 @@
  */
 package network.Training;
 
-import network.Network.Network;
+import network.Network.*;
 import network.Connections.*;
 import network.Neurons.*;
 import network.Layer.*;
@@ -82,14 +82,16 @@ public class Backpropagation implements LearningRule{
         }
         this.errorFunction = errorFunction;
     }
+
       
-    @Override
-    public void applyRule(Network network, TrainingSet set) {
+   @Override     
+    public void applyRule(Network net, TrainingSet set) {
         //Initialize iterator, globalError and HashMaps for weightIncrement and local gradient delta
+        FeedForwardNet network = (FeedForwardNet) net;
         int iterator = 0;
         double globalError = Double.MAX_VALUE;
-        HashMap<Synapse,Double> weightIncrement = new HashMap<>();
-        HashMap<Neuron, Double> delta = new HashMap<>();
+        HashMap<Synapse,Double> incrementMap = new HashMap<>();
+        HashMap<Neuron, Double> deltaMap = new HashMap<>();
         
         //Loop until error is small enough or maxIter is reached
         while(globalError > maxError || iterator < maxIter){
@@ -101,26 +103,87 @@ public class Backpropagation implements LearningRule{
                 network.solve(input);
                 globalError = errorFunction.compGlobalError(network.getOutput(), pattern.t);
                 
-                //BACKPROPAGATION of ERROR
+                //Loop backwards over all layers except inputlayer
+                for (int i = (network.getLayers().size()-1); i > 0  ; i--) {
+                    Layer currentLayer = network.getLayers().get(i);
+                    //Loop over all neurons in layer
+                    int j = 0;
+                    for (Neuron neuron : currentLayer.getNeurons()) {
+                        //Compute derivation of activityfunction
+                        DifferentiableFct activityFct = (DifferentiableFct) neuron.getActivityFunction();
+                        double activityDeriv = activityFct.getDerivative(neuron.output);
+                        //Distinguish output or hidden layer and compute delta for neuron
+                        if(i == (network.getLayers().size()-1)){
+                            double delta = activityDeriv*(pattern.t[j]-neuron.output);
+                            deltaMap.put(neuron, delta);
+                        }else{
+                            double sumDelta = 0;
+                            //Loop over all connected neurons in next layer
+                            for(Synapse outSynapse : neuron.getOutSynapses()){
+                                Neuron outNeuron = outSynapse.getOutNeuron();
+                                sumDelta += deltaMap.get(outNeuron)*outSynapse.getWeight();
+                            }
+                            double delta = activityDeriv * sumDelta;
+                            deltaMap.put(neuron, delta);
+                        }
+                        //Compute weightincrement and store in map
+                        for(Synapse inSynapse : neuron.getInSynapses()){
+                            Neuron inNeuron = inSynapse.getInNeuron();
+                            double weightIncrement = learningRate*deltaMap.get(neuron)*inNeuron.output;
+                            //batch-learning
+                            if(incrementMap.isEmpty()){
+                                incrementMap.put(inSynapse, weightIncrement);
+                            }else{
+                                double oldIncrement = incrementMap.get(inSynapse);
+                                double newIncrement = oldIncrement + weightIncrement;
+                                incrementMap.put(inSynapse, newIncrement);
+                            }
+                        }
+                        j++;
+                    }
+                    
+                }//end backprop-loop
+                
+                //Check for learningtype and update weights
+                if(network.isLearningOnline() || patternCount == set.getPatterns().size()){
+                    this.updateWeights(network, incrementMap);
+                    incrementMap.clear();
+                    deltaMap.clear();
+                }
                 
                 //Shuffle pattern after every pattern shown once
-                patternCount += 1;
+                patternCount++;
                 if(patternCount >= set.getPatterns().size()){
                     set.shufflePatterns();
                     patternCount = 1;
                 }
                 
             }
-            
-            
-            
+                      
         }
         
     }
     
+    /**
+     * Updates synaptic weights
+     * @param incrementMap
+     * @param network
+     */
+    private void updateWeights(Network net, HashMap incrementMap){
+        //Loop over all layers, neurons and synaptic outputconnections
+        FeedForwardNet network = (FeedForwardNet) net;
+        for (Layer layer : network.getLayers()) {
+            for(Neuron neuron : layer.getNeurons()){
+                for(Synapse outSynapse : neuron.getOutSynapses()){
+                    double newWeight;
+                    newWeight = (outSynapse.getWeight()+ (double) incrementMap.get(outSynapse));
+                    outSynapse.setWeight(newWeight);
+                }
+            }
+        }
+    }
     
     //Getter and setter
-
     public double getLearningRate() {
         return learningRate;
     }

@@ -86,5 +86,5 @@ public interface Network {
      */
     public void setAllActivityFcts(ScalarFct activityFct);
     
-    public LinkedList<Layer> getLayers();
+
 }
