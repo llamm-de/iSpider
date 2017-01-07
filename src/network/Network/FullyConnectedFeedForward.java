@@ -29,9 +29,10 @@ import network.Training.*;
 import network.Layer.*;
 import network.Neurons.*;
 import network.Connections.Synapse;
+import tools.Function.ScalarFct;
 
 /**
- *
+ * Class for a fully connected feed-forward-network
  * @author LammLukas
  */
 public class FullyConnectedFeedForward extends FeedForwardNet{
@@ -191,7 +192,29 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     public LinkedList<Neuron> getInputNeurons() {
         return this.layers.getFirst().getNeurons();
     }
+
+    @Override
+    public void setAllActivityFcts(ScalarFct activityFct) {
+        //Loop over all layers
+        for (Layer layer : layers) {
+            //Loop over all neurons of layer if not inputLayer
+            LinkedList<Neuron> currNeurons = layer.getNeurons();
+            if(!(currNeurons.get(0) instanceof InputNeuron)){
+                for (Neuron currNeuron : currNeurons) {
+                    currNeuron.setActivityFunction(activityFct);
+                }
+            }
+        }
+    }
     
+    
+    /**
+     * Getter for layers
+     * @return all layers of network
+     */
+    public LinkedList<Layer> getLayers(){
+      return this.layers;  
+    }
     
     
     

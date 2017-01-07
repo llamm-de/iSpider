@@ -21,21 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Training;
+package Testfolder;
 
-import network.Network.Network;
+import tools.Function.*;
+import tools.*;
 
 /**
- * Perceptron learningrule for single-layer perceptron.
- * TO BE IMPLEMENTED
+ *
  * @author LammLukas
  */
-public class PerceptronRule implements LearningRule{
-
-    @Override
-    public void applyRule(Network network, TrainingSet set) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class FunctionTest {
     
+    public static void main(String[] args) {
+        
+        //Initialize Plot
+        FunctionGraph graph = new FunctionGraph("Functiontest","X","Y");
+        double xMin = -10;
+        double xMax = 10;
+        double step = 1;
+        
+        //Identity
+        IdentityFct identity = new IdentityFct();
+        graph.addOrUpdateSeries(identity, xMin, xMax, step,"identity");
+        graph.plot(500,500);
+        
+        //Heavisidefunction
+        HeavisideFct heaviside = new HeavisideFct();
+        graph.addOrUpdateSeries(heaviside, xMin, xMax, step,"heaviside");
+        graph.plot(500,500);
+        
+        //Sigmoidfunction
+        SigmoidFct sigmoid = new SigmoidFct();
+        graph.addOrUpdateSeries(sigmoid, xMin, xMax, step,"sigmoid");
+        graph.plot(500,500);
+        
+        //Hyperbolic tangent
+        HyperbolicTangentFct tanh = new HyperbolicTangentFct();
+        graph.addOrUpdateSeries(tanh, xMin, xMax, step,"tanh");
+        graph.plot(500,500);
+    }
     
 }

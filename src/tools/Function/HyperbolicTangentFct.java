@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 LammLukas.
+ * Copyright 2017 LammLukas.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,56 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Training;
-
-import network.Network.Network;
+package tools.Function;
 
 /**
- *
+ * Hyperbolic tangent and its first derivative
  * @author LammLukas
  */
-public class DeltaRule implements LearningRule{
+public class HyperbolicTangentFct extends DifferentiableFct{
+
     
-    /**
-     * Learning rate
-     */
-    private double learningRate;
-
-    /**
-     * empty Constructor
-     */
-    public DeltaRule() {
-    }
-      
-    /**
-     * Constructor
-     * @param learningRate 
-     */
-    public DeltaRule(double learningRate) {
-        this.learningRate = learningRate;
-    }
-
-    /**
-     * Applies rule to network
-     * @param network
-     * @param set
-     */
     @Override
-    public void applyRule(Network network, TrainingSet set) {
-        
+    public double getValue(double value) {
+        return Math.tanh(value);
     }
 
-    /**
-     * setter for private learningRate
-     * @param learningRate 
-     */
-    public void setLearningRate(double learningRate) {
-        this.learningRate = learningRate;
+    @Override
+    public double getDerivative(double value) {
+        return (1-Math.pow(Math.tanh(value), 2));
     }
-    
-    
-    
-    
     
     
     

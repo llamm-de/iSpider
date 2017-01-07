@@ -25,6 +25,7 @@ package network.Training;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Collections;
 
 /**
  * Class for a set of trainingpatterns
@@ -36,13 +37,8 @@ public class TrainingSet {
     /**
      * List of trainingspatterns
      */
-    public LinkedList<TrainingPattern> patterns;
-    
-    /**
-     * Generator for random numbers
-     */
-    Random random = new Random();
-
+    private LinkedList<TrainingPattern> patterns;
+     
     /**
      * Empty Constructor
      */
@@ -58,18 +54,27 @@ public class TrainingSet {
         this.patterns = patterns;
     }
     
+//    /**
+//     * Gets random pattern from set
+//     * @return 
+//     */
+//    public TrainingPattern getPattern(){
+//        //shuffle patterns after every pattern has been chosen once
+//        if(counter >= patterns.size()){
+//            counter = 0;
+//            Collections.shuffle(patterns);
+//        }
+//        TrainingPattern pattern = patterns.get(counter);
+//        counter += 1;
+//        return pattern;
+//    }
+       
     /**
-     * Gets random pattern from set
-     * @return 
+     * Shuffles patterns
      */
-    public TrainingPattern getRandom(){
-        //Get size of set and generate random number in range
-        int numPatterns = patterns.size();
-        int index = random.nextInt(numPatterns);
-        
-        return patterns.get(index);
+    public void shufflePatterns(){
+        Collections.shuffle(patterns);
     }
-    
     
     /**
      * Adds pattern to set
@@ -85,6 +90,11 @@ public class TrainingSet {
      */
     public void remPattern(TrainingPattern pattern){
         this.patterns.remove(pattern);
+    }
+
+    //Getter and Setter
+    public LinkedList<TrainingPattern> getPatterns() {
+        return patterns;
     }
     
     

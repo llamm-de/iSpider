@@ -26,6 +26,9 @@ package network.Network;
 import java.util.LinkedList;
 import network.Neurons.*;
 import network.Training.*;
+import network.Layer.*;
+import tools.Function.ScalarFct;
+     
 /**
  *
  * @author LammLukas
@@ -76,4 +79,12 @@ public interface Network {
      * @return LinkedList
      */
     public LinkedList<Neuron> getInputNeurons();
+    
+    /**
+     * Sets ActivityFcts of all neurons except inputneurons.
+     * @param activityFct 
+     */
+    public void setAllActivityFcts(ScalarFct activityFct);
+    
+    public LinkedList<Layer> getLayers();
 }

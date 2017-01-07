@@ -24,6 +24,13 @@
 package network.Training;
 
 import network.Network.Network;
+import network.Connections.*;
+import network.Neurons.*;
+import network.Layer.*;
+
+import tools.Function.*;
+
+import java.util.HashMap;
 
 /**
  * Class for Backpropagation of error.
@@ -31,10 +38,107 @@ import network.Network.Network;
  * @author LammLukas
  */
 public class Backpropagation implements LearningRule{
+    
+    /**
+     * Learningrate
+     */
+    private double learningRate;
+    
+    /**
+     * Maximum error allowed
+     */
+    private double maxError;
+    
+    /**
+     * Maximum number of iterations
+     */
+    private double maxIter;
+    
+    /**
+     * Errorfunction
+     */
+    private ErrorFunction errorFunction;
 
+    /**
+     * Empty Constructor
+     * Learningrate predefined as 1.
+     * Errorfunction predefined as MeanSquaredError.
+     */
+    public Backpropagation() {
+        this.learningRate = 1;
+        this.errorFunction = new MeanSquaredError();
+    }
+
+    /**
+     * Constructor with variable learningrate
+     * @param learningRate
+     * @param errorFunction
+     */
+    public Backpropagation(double learningRate, ErrorFunction errorFunction) {
+        if (learningRate <= 1 && learningRate > 0){
+            this.learningRate = learningRate;
+        }else{
+            this.learningRate = 1;
+        }
+        this.errorFunction = errorFunction;
+    }
+      
     @Override
     public void applyRule(Network network, TrainingSet set) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Initialize iterator, globalError and HashMaps for weightIncrement and local gradient delta
+        int iterator = 0;
+        double globalError = Double.MAX_VALUE;
+        HashMap<Synapse,Double> weightIncrement = new HashMap<>();
+        HashMap<Neuron, Double> delta = new HashMap<>();
+        
+        //Loop until error is small enough or maxIter is reached
+        while(globalError > maxError || iterator < maxIter){
+            //Loop over all patterns
+            int patternCount = 1;
+            for (TrainingPattern pattern : set.getPatterns()) {
+                //Solve for pattern and compute error
+                double[] input = pattern.p;
+                network.solve(input);
+                globalError = errorFunction.compGlobalError(network.getOutput(), pattern.t);
+                
+                //BACKPROPAGATION of ERROR
+                
+                //Shuffle pattern after every pattern shown once
+                patternCount += 1;
+                if(patternCount >= set.getPatterns().size()){
+                    set.shufflePatterns();
+                    patternCount = 1;
+                }
+                
+            }
+            
+            
+            
+        }
+        
+    }
+    
+    
+    //Getter and setter
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearingRate(double learningRate) {
+        if (learningRate <= 1 && learningRate > 0){
+            this.learningRate = learningRate;
+        }else{
+            this.learningRate = 1;
+        }
+    }
+
+    public void setMaxError(double maxError) {
+        this.maxError = maxError;
+    }
+
+    public void setMaxIter(double maxIter) {
+        this.maxIter = maxIter;
     }
     
     
