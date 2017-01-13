@@ -24,7 +24,7 @@
 package network.Training;
 
 import java.util.LinkedList;
-import java.util.Random;
+
 import java.util.Collections;
 
 /**
@@ -37,64 +37,85 @@ public class TrainingSet {
     /**
      * List of trainingspatterns
      */
-    private LinkedList<TrainingPattern> patterns;
+    private LinkedList<TrainingPattern> trainingPatterns;
+    
+    /**
+     * List of testpatterns
+     */
+    private LinkedList<TrainingPattern> testPatterns;
      
     /**
      * Empty Constructor
      */
     public TrainingSet() {
-        this.patterns = new LinkedList<>();
+        this.trainingPatterns = new LinkedList<>();
+        this.testPatterns = new LinkedList<>();
     }
 
     /**
-     * Constructor with predefines patterns
-     * @param patterns 
+     * Constructor with predefines trainingpatterns
+     * and empty testpatterns
+     * @param trainingPatterns 
      */
-    public TrainingSet(LinkedList<TrainingPattern> patterns) {
-        this.patterns = patterns;
+    public TrainingSet(LinkedList<TrainingPattern> trainingPatterns) {
+        this.trainingPatterns = trainingPatterns;
+        this.testPatterns = new LinkedList<>();
     }
     
-//    /**
-//     * Gets random pattern from set
-//     * @return 
-//     */
-//    public TrainingPattern getPattern(){
-//        //shuffle patterns after every pattern has been chosen once
-//        if(counter >= patterns.size()){
-//            counter = 0;
-//            Collections.shuffle(patterns);
-//        }
-//        TrainingPattern pattern = patterns.get(counter);
-//        counter += 1;
-//        return pattern;
-//    }
-       
+    /**
+     * Constructor with predefined patterns
+     * @param trainingPatterns
+     * @param testPatterns 
+     */
+    public TrainingSet(LinkedList<TrainingPattern> trainingPatterns, LinkedList<TrainingPattern> testPatterns){
+        this.trainingPatterns = trainingPatterns;
+        this.testPatterns = testPatterns;
+    }
+    
+      
     /**
      * Shuffles patterns
      */
     public void shufflePatterns(){
-        Collections.shuffle(patterns);
+        Collections.shuffle(trainingPatterns);
     }
     
     /**
      * Adds pattern to set
      * @param pattern 
      */
-    public void addPattern(TrainingPattern pattern){
-        this.patterns.add(pattern);
+    public void addTrainingPattern(TrainingPattern pattern){
+        this.trainingPatterns.add(pattern);
     }
     
     /**
      * Removes pattern from set
      * @param pattern 
      */
-    public void remPattern(TrainingPattern pattern){
-        this.patterns.remove(pattern);
+    public void remTrainingPattern(TrainingPattern pattern){
+        this.trainingPatterns.remove(pattern);
     }
+    
+        /**
+     * Adds pattern to set
+     * @param pattern 
+     */
+    public void addTestPattern(TrainingPattern pattern){
+        this.testPatterns.add(pattern);
+    }
+    
+    /**
+     * Removes pattern from set
+     * @param pattern 
+     */
+    public void remTestPattern(TrainingPattern pattern){
+        this.testPatterns.remove(pattern);
+    }
+    
 
     //Getter and Setter
-    public LinkedList<TrainingPattern> getPatterns() {
-        return patterns;
+    public LinkedList<TrainingPattern> getTrainingPatterns() {
+        return trainingPatterns;
     }
     
     

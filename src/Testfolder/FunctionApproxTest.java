@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 LammLukas.
+ * Copyright 2017 LammLukas.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,33 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package tools.Function;
+package Testfolder;
+
+import network.Network.*;
+import network.Training.*;
+
+import tools.Function.*;
 
 /**
- * Class for root-mean-squared-error
+ * Testclass for backpropagation-algorithm
+ * Tests, if network is able to learn to approximate a sinus function.
  * @author LammLukas
  */
-public class RmsError extends ErrorFunction{
+public class FunctionApproxTest {
     
-    /**
-     * Computes root-mean-squared-error error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
-     */
-    @Override
-    public double compGlobalError(double[] a, double[] b) {
-        this.error = ErrorFunction.compSquaredSum(a, b);
-        return Math.sqrt(error/a.length);
+    public static void main(String[] args) {
+        
+       //Initialize Network
+       int inNeurons = 1;
+       int outNeurons = 1;
+       int numLayers = 3;
+       FullyConnectedFeedForward network = new FullyConnectedFeedForward(inNeurons, outNeurons, numLayers);
+       network.assembleNet();
+       network.setAllActivityFcts(new HyperbolicTangentFct());
+       
+        
+        
+       //Get TrainingSet
+       double[] range = new double[2];
+       range[0] = -10;
+       range[1] = 10;
+       TrainingSet trainingSet = SinusSet.createSet(100, range);
+       
+       
+       //Train network
+       
+       
+        
     }
-
-    @Override
-    public double compDerivative(double a, double b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
-    
-    
     
 }

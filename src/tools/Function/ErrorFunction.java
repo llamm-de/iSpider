@@ -28,7 +28,7 @@ package tools.Function;
  * Abstract class for errorfunctions
  * @author LammLukas
  */
-public abstract class ErrorFunction {
+public abstract class ErrorFunction{
     
     /**
      * Error to be computed
@@ -43,13 +43,25 @@ public abstract class ErrorFunction {
      */
     public abstract double compGlobalError(double[] a, double[] b);
       
+        
+    /**
+     * Computes the local derivativ of the errorfunction with respect
+     * to the local error itself.
+     * @param a double for output
+     * @param b double trainingInput
+     * @return double derivative of error
+     */ 
+    public abstract double compDerivative(double a, double b);
+    
     /**
      * Computes error for single neuron
      * @param a double output
      * @param b double trainingInput
      * @return double error
      */
-    public abstract double compSingleError(double a, double b);
+    protected static double compLocalError(double a, double b){
+        return (b-a);
+    }
     
     /**
      * Computes the negative squared sum of all elements in a and b

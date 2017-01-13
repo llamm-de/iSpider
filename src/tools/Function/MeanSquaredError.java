@@ -41,12 +41,18 @@ public class MeanSquaredError extends ErrorFunction{
         return 0.5*error;
     }
 
+    /**
+     * Computes derivative of the errorfunction with respect
+     * to the local error itself.
+     * @param a output
+     * @param b teachingInput
+     * @return double derivative
+     */
     @Override
-    public double compSingleError(double a, double b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double compDerivative(double a, double b) {
+        return ErrorFunction.compLocalError(a, b);
+        
     }
-    
-    
-    
+   
     
 }

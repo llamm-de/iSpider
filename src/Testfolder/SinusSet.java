@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 LammLukas.
+ * Copyright 2017 LammLukas.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,33 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package tools.Function;
+package Testfolder;
+
+import network.Training.*;
+import tools.Function.SinusFct;
+import java.util.Random;
 
 /**
- * Class for root-mean-squared-error
+ *
  * @author LammLukas
  */
-public class RmsError extends ErrorFunction{
-    
-    /**
-     * Computes root-mean-squared-error error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
-     */
-    @Override
-    public double compGlobalError(double[] a, double[] b) {
-        this.error = ErrorFunction.compSquaredSum(a, b);
-        return Math.sqrt(error/a.length);
-    }
-
-    @Override
-    public double compDerivative(double a, double b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+public class SinusSet{
     
     
-    
+    public static TrainingSet createSet(int numPatterns, double[] range){
+        TrainingSet sinusSet = new TrainingSet();
+        SinusFct sinusFct = new SinusFct();
+        Random random = new Random();
+        double rangeMin = range[0];
+        double rangeMax = range[1];
+        double[] input = new double[1];
+        double[] output = new double[1];
+        
+        for (int i = 1; i <= numPatterns; i++) {
+            input[0] = rangeMin + (rangeMax - rangeMin)*random.nextDouble();
+            output[0] = sinusFct.getValue(input[0]);
+            TrainingPattern pattern = new TrainingPattern(input, output);
+            sinusSet.addTrainingPattern(pattern);
+        }
+        
+        
+        
+        return null;
+    };
     
 }

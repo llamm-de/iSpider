@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 LammLukas.
+ * Copyright 2017 LammLukas.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,29 +24,20 @@
 package tools.Function;
 
 /**
- * Class for root-mean-squared-error
+ *
  * @author LammLukas
  */
-public class RmsError extends ErrorFunction{
-    
-    /**
-     * Computes root-mean-squared-error error
-     * @param a double[] output
-     * @param b double[] trainingInput
-     * @return double error
-     */
+public class SinusFct extends DifferentiableFct{
+
     @Override
-    public double compGlobalError(double[] a, double[] b) {
-        this.error = ErrorFunction.compSquaredSum(a, b);
-        return Math.sqrt(error/a.length);
+    public double getValue(double value) {
+        return Math.sin(value);
     }
 
     @Override
-    public double compDerivative(double a, double b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double getDerivative(double value) {
+        return Math.cos(value);
     }
-
-    
     
     
     

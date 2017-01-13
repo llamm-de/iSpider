@@ -27,6 +27,7 @@ import network.Network.*;
 import network.Connections.*;
 import network.Neurons.*;
 import network.Layer.*;
+import data.ErrorData;
 
 import tools.Function.*;
 
@@ -97,7 +98,7 @@ public class Backpropagation implements LearningRule{
         while(globalError > maxError || iterator < maxIter){
             //Loop over all patterns
             int patternCount = 1;
-            for (TrainingPattern pattern : set.getPatterns()) {
+            for (TrainingPattern pattern : set.getTrainingPatterns()) {
                 //Solve for pattern and compute error
                 double[] input = pattern.p;
                 network.solve(input);
@@ -114,7 +115,7 @@ public class Backpropagation implements LearningRule{
                         double activityDeriv = activityFct.getDerivative(neuron.output);
                         //Distinguish output or hidden layer and compute delta for neuron
                         if(i == (network.getLayers().size()-1)){
-                            double delta = activityDeriv*(pattern.t[j]-neuron.output);
+                            double delta = activityDeriv*errorFunction.compDerivative(pattern.t[j], network.outputData[j]);
                             deltaMap.put(neuron, delta);
                         }else{
                             double sumDelta = 0;
@@ -130,10 +131,10 @@ public class Backpropagation implements LearningRule{
                         for(Synapse inSynapse : neuron.getInSynapses()){
                             Neuron inNeuron = inSynapse.getInNeuron();
                             double weightIncrement = learningRate*deltaMap.get(neuron)*inNeuron.output;
-                            //batch-learning
+                            //Distinguish: online or batch-learning
                             if(incrementMap.isEmpty()){
                                 incrementMap.put(inSynapse, weightIncrement);
-                            }else{
+                            }else{                                                      //batch
                                 double oldIncrement = incrementMap.get(inSynapse);
                                 double newIncrement = oldIncrement + weightIncrement;
                                 incrementMap.put(inSynapse, newIncrement);
@@ -145,7 +146,7 @@ public class Backpropagation implements LearningRule{
                 }//end backprop-loop
                 
                 //Check for learningtype and update weights
-                if(network.isLearningOnline() || patternCount == set.getPatterns().size()){
+                if(network.isLearningOnline() || patternCount == set.getTrainingPatterns().size()){
                     this.updateWeights(network, incrementMap);
                     incrementMap.clear();
                     deltaMap.clear();
@@ -153,7 +154,7 @@ public class Backpropagation implements LearningRule{
                 
                 //Shuffle pattern after every pattern shown once
                 patternCount++;
-                if(patternCount >= set.getPatterns().size()){
+                if(patternCount >= set.getTrainingPatterns().size()){
                     set.shufflePatterns();
                     patternCount = 1;
                 }
@@ -203,6 +204,16 @@ public class Backpropagation implements LearningRule{
     public void setMaxIter(double maxIter) {
         this.maxIter = maxIter;
     }
+
+    public ErrorFunction getErrorFunction() {
+        return errorFunction;
+    }
+
+    public void setErrorFunction(ErrorFunction errorFunction) {
+        this.errorFunction = errorFunction;
+    }
+    
+    
     
     
     

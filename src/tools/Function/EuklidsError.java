@@ -42,9 +42,11 @@ public class EuklidsError extends ErrorFunction {
     }    
 
     @Override
-    public double compSingleError(double a, double b) {
+    public double compDerivative(double a, double b) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
     
     
     

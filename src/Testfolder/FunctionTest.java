@@ -59,6 +59,11 @@ public class FunctionTest {
         HyperbolicTangentFct tanh = new HyperbolicTangentFct();
         graph.addOrUpdateSeries(tanh, xMin, xMax, step,"tanh");
         graph.plot(500,500);
+        
+        //Sinus
+        SinusFct sinus = new SinusFct();
+        graph.addOrUpdateSeries(sinus, xMin, xMax, step,"sinus");
+        graph.plot(500,500);
     }
     
 }
