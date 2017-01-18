@@ -23,18 +23,21 @@
  */
 package Testfolder;
 
+import java.util.Arrays;
 import network.Training.*;
 import tools.Function.SinusFct;
 import java.util.Random;
 
 /**
- *
+ * Class for creating a trainingset from sinusfunction.
  * @author LammLukas
  */
 public class SinusSet{
     
     
     public static TrainingSet createSet(int numPatterns, double[] range){
+       
+        //initialize datastructures
         TrainingSet sinusSet = new TrainingSet();
         SinusFct sinusFct = new SinusFct();
         Random random = new Random();
@@ -42,17 +45,53 @@ public class SinusSet{
         double rangeMax = range[1];
         double[] input = new double[1];
         double[] output = new double[1];
+        double[] allInputs = new double[numPatterns];
+        double[] allOutputs = new double[numPatterns];
+        TrainingPattern trainingPattern = new TrainingPattern();
+        TrainingPattern testPattern = new TrainingPattern();
         
-        for (int i = 1; i <= numPatterns; i++) {
+        //Create random trainingpatterns        
+        for (int i = 0; i < numPatterns; i++) {           
+            //get random input
             input[0] = rangeMin + (rangeMax - rangeMin)*random.nextDouble();
+            //round input
+            input[0] = input[0]*100;
+            input[0] = Math.round(input[0]);
+            input[0] = input[0]/100;
+            
+            //compute desired output from input and create pattern
             output[0] = sinusFct.getValue(input[0]);
-            TrainingPattern pattern = new TrainingPattern(input, output);
-            sinusSet.addTrainingPattern(pattern);
-        }
+            trainingPattern.setP(input);
+            trainingPattern.setT(output);
+            
+            System.out.println(Arrays.toString(trainingPattern.p));
+            
+            //store trainingpatterns
+            sinusSet.addTrainingPattern(trainingPattern);
+            
+            System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getFirst().p));
+                                    
+            //store random input for checking in testpattern
+            allInputs[i] = input[0];
+            allOutputs[i] = output[0];
+            //create testpattern
+            if(i%2 == 0){
+                //get random input
+                input[0] = rangeMin + (rangeMax - rangeMin)*random.nextDouble();
+                //compute desired output from input and create pattern
+                output[0] = sinusFct.getValue(input[0]);
+                testPattern.setP(input);
+                testPattern.setT(output);
+                sinusSet.addTestPattern(testPattern);
+            }
+           
+        }      
+       
+        System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getFirst().p));
+        System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getLast().p));
         
-        
-        
-        return null;
+        return sinusSet;
+       
     };
     
 }

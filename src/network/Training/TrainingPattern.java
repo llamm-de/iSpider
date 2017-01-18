@@ -51,6 +51,32 @@ public class TrainingPattern {
         this.p = p;
         this.t = t;
     }
+
+    /**
+     * Empty constructor
+     */
+    public TrainingPattern() {        
+    }
+
+    //Getter and Setter
+    public double[] getP() {
+        return p;
+    }
+
+    public void setP(double[] p) {
+        this.p = p;
+    }
+
+    public double[] getT() {
+        return t;
+    }
+
+    public void setT(double[] t) {
+        this.t = t;
+    }
+    
+    
+    
     
     
     
