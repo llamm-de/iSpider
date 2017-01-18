@@ -43,15 +43,18 @@ public class SinusSet{
         Random random = new Random();
         double rangeMin = range[0];
         double rangeMax = range[1];
-        double[] input = new double[1];
-        double[] output = new double[1];
         double[] allInputs = new double[numPatterns];
         double[] allOutputs = new double[numPatterns];
-        TrainingPattern trainingPattern = new TrainingPattern();
-        TrainingPattern testPattern = new TrainingPattern();
+
         
         //Create random trainingpatterns        
-        for (int i = 0; i < numPatterns; i++) {           
+        for (int i = 0; i < numPatterns; i++) {   
+            //create new objects for in- and outputdata and pattern
+            double[] input = new double[1];
+            double[] output = new double[1];
+            TrainingPattern trainingPattern = new TrainingPattern();
+            TrainingPattern testPattern = new TrainingPattern();
+            
             //get random input
             input[0] = rangeMin + (rangeMax - rangeMin)*random.nextDouble();
             //round input
@@ -63,14 +66,10 @@ public class SinusSet{
             output[0] = sinusFct.getValue(input[0]);
             trainingPattern.setP(input);
             trainingPattern.setT(output);
-            
-            System.out.println(Arrays.toString(trainingPattern.p));
-            
+                        
             //store trainingpatterns
             sinusSet.addTrainingPattern(trainingPattern);
             
-            System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getFirst().p));
-                                    
             //store random input for checking in testpattern
             allInputs[i] = input[0];
             allOutputs[i] = output[0];
@@ -86,12 +85,7 @@ public class SinusSet{
             }
            
         }      
-       
-        System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getFirst().p));
-        System.out.println(Arrays.toString(sinusSet.getTrainingPatterns().getLast().p));
-        
         return sinusSet;
-       
     };
     
 }

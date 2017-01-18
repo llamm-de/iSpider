@@ -38,7 +38,7 @@ public class SinusSetTest {
         double[] range = new double[2];
         range[0] = -10;
         range[1] = 10;
-        int numPatterns = 2;
+        int numPatterns = 100;
         
         // Create set
         TrainingSet sinSet = SinusSet.createSet(numPatterns, range);
