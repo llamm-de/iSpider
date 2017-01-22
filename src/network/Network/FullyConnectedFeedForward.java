@@ -56,6 +56,28 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.layers = new LinkedList<>();
         this.numInputNeurons = nInputNeurons;
         this.numOutputNeurons = nOutputNeurons;
+        this.numHiddenNeurons = nOutputNeurons;
+        this.numLayers = nLayers;
+        this.learningRule = new Backpropagation();
+        this.inputData = new double[numInputNeurons];
+        this.outputData = new double[numOutputNeurons];
+        this.onlineLearning = true;
+    }
+    
+        /**
+     * Constructor 
+     * with predefined learningrule, set as backpropagation
+     * with predefined LearningType, set as Online
+     * @param nInputNeurons
+     * @param nOutputNeurons
+     * @param nHiddenNeurons
+     * @param nLayers 
+     */
+    public FullyConnectedFeedForward(int nInputNeurons, int nOutputNeurons, int nHiddenNeurons, int nLayers) {
+        this.layers = new LinkedList<>();
+        this.numInputNeurons = nInputNeurons;
+        this.numOutputNeurons = nOutputNeurons;
+        this.numHiddenNeurons = nHiddenNeurons;
         this.numLayers = nLayers;
         this.learningRule = new Backpropagation();
         this.inputData = new double[numInputNeurons];
@@ -76,6 +98,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.layers = new LinkedList<>();
         this.numInputNeurons = nInputNeurons;
         this.numOutputNeurons = nOutputNeurons;
+        this.numHiddenNeurons = nOutputNeurons;
         this.numLayers = nLayers;
         this.learningRule = learningRule;
         this.inputData = new double[numInputNeurons];
@@ -93,11 +116,11 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         int j = 1;
         for (Layer layer : layers) {
             //check for input- and outputlayer
-            if(j == 1){
+            if(j == 1){                             //Inputlayer
                 layer.addInputNeurons(numInputNeurons);
-            }else if(j == (numLayers-1)){
-                layer.addNeurons(numInputNeurons);
-            }else{
+            }else if(j > 1 && j < numLayers){       //Hidden
+                layer.addNeurons(numHiddenNeurons);
+            }else{                                  //Output
                 layer.addNeurons(numOutputNeurons);
             }
             j++;

@@ -48,6 +48,11 @@ public abstract class FeedForwardNet implements Network{
     protected int numInputNeurons;
     
     /**
+     * Number of hidden neurons in each hidden layer
+     */
+    protected int numHiddenNeurons;
+    
+    /**
      * number of outputneurons for network
      */
     protected int numOutputNeurons;

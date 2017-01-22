@@ -39,16 +39,22 @@ public class FunctionApproxTest {
     
     public static void main(String[] args) {
         
+       //Set parameters for test
+       int inNeurons = 1;
+       int outNeurons = 1;
+       int hiddenNeurons = 4;
+       int numLayers = 3;
+       double learningRate = 0.2;
+       int maxIter = 10000;
+       double maxError = 0.01;
+   
        //Initialize Network
         System.out.print("Initializing Network...");
         System.out.println("DONE!");
-       int inNeurons = 1;
-       int outNeurons = 1;
-       int numLayers = 3;
-       FullyConnectedFeedForward network = new FullyConnectedFeedForward(inNeurons, outNeurons, numLayers);
-       System.out.print("Assembling Network...");
+       FullyConnectedFeedForward network = new FullyConnectedFeedForward(inNeurons, outNeurons, hiddenNeurons, numLayers);
+        System.out.print("Assembling Network...");
        network.assembleNet();
-       System.out.println("DONE!");
+        System.out.println("DONE!");
         System.out.print("Setting Activityfunction...");
        network.setAllActivityFcts(new HyperbolicTangentFct());
         System.out.println("DONE!");
@@ -60,16 +66,19 @@ public class FunctionApproxTest {
        double[] range = new double[2];
        range[0] = -10;
        range[1] = 10;
-       TrainingSet trainingSet = SinusSet.createSet(100, range);
+       //TrainingSet trainingSet = SinusSet.createSet(100, range);
+       TrainingSet trainingSet = QuadraticFctSet.createSet(100, range);
         System.out.println("DONE!");
        
        
-       //Train network
+       //Train network      
         System.out.println("Learningalgorithm started...");
-       int maxIter = 1000;
-       double maxError = 0.01;
        
        Backpropagation learningRule = (Backpropagation) network.learningRule;
+       
+        System.out.println("Setting learningrate to: " + learningRate);
+       learningRule.setLearingRate(learningRate);
+       
        //setting for learningtype
        network.setLearningType(true);
        if(network.isLearningOnline()){
@@ -105,10 +114,13 @@ public class FunctionApproxTest {
         double[] iterVec = ToolClass.makeRangeArray(0, (numIter+1), 1);
         graph.addOrUpdateSeries(iterVec, errorTrain, "Training error");
         graph.addOrUpdateSeries(iterVec, errorTest, "Test error");
-        graph.plot(1000,1000);
+        graph.setSeriesLinesAndShapesVisible("Training error", true, false);
+        graph.setSeriesLinesAndShapesVisible("Test error", true, false);
+        graph.plot(800,800);
         
         
-        
+        System.out.println("");
+        System.out.println("END OF PROGRAM!");
         
         
        

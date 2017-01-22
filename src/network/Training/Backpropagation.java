@@ -120,7 +120,7 @@ public class Backpropagation implements LearningRule{
                         double activityDeriv = activityFct.getDerivative(neuron.output);
                         //Distinguish if output or hidden layer and compute delta for neuron
                         if(i == (network.getLayers().size()-1)){    //output
-                            double delta = activityDeriv*errorFunction.compDerivative(pattern.t[j], network.outputData[j]);
+                            double delta = activityDeriv*errorFunction.compDerivative(network.outputData[j], pattern.t[j]);
                             deltaMap.put(neuron, delta);
                         }else{                                      //hidden
                             double sumDelta = 0;
@@ -221,6 +221,12 @@ public class Backpropagation implements LearningRule{
                     outSynapse.setWeight(newWeight);
                 }
             }
+        }
+        //Update bias-synapses
+        for(Synapse outSynapse : network.getBias().getOutSynapses()){
+            double newWeight;
+            newWeight = (outSynapse.getWeight()+ (double) incrementMap.get(outSynapse));
+            outSynapse.setWeight(newWeight);
         }
     }
     
