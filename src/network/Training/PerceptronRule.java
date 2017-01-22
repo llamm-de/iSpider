@@ -24,6 +24,7 @@
 package network.Training;
 
 import network.Network.Network;
+import data.ErrorData;
 
 /**
  * Perceptron learningrule for single-layer perceptron.
@@ -33,7 +34,7 @@ import network.Network.Network;
 public class PerceptronRule implements LearningRule{
 
     @Override
-    public void applyRule(Network network, TrainingSet set) {
+    public ErrorData applyRule(Network network, TrainingSet set) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

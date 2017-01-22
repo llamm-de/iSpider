@@ -24,6 +24,9 @@
 package Testfolder;
 
 import network.Network.*;
+import tools.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 /**
  *
  * @author LammLukas
@@ -31,9 +34,24 @@ import network.Network.*;
 public class GeneralTestClass {
     
     public static void main(String[] args) {
-        SingleLayerPerceptron slp = new SingleLayerPerceptron(2,1);
         
-        System.out.println("");
+        double d1 = 10;
+        double d2 = 112;
+        double d3 = 3293;
+        
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(d3);
+        list.add(d2);
+        list.add(d1);
+        
+        double[] array = ToolClass.listToArray(list);
+        
+        System.out.println(list);
+        System.out.println(Arrays.toString(array));
+        
+        double[] intArray = ToolClass.makeRangeArray(0, 10, 1);
+        System.out.println(Arrays.toString(intArray));
+        
     }
     
 }

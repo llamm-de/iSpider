@@ -37,15 +37,27 @@ public class ErrorData {
     private int numIter;
     
     /*
+    * 
+    */
+    private boolean trainingSuccess;
+    
+    /*
     * ArrayList for the global error made while executing lernalgorithm
     */
-    private ArrayList<Double> globalError;
+    private ArrayList<Double> globalErrorTrain;
+    
+    /*
+    * ArrayList for global error computed with testpatterns
+    */
+    private ArrayList<Double> globalErrorTest;
 
     /**
      * Empty Constructor
     */
     public ErrorData() {
-        this.globalError = new ArrayList<>();
+        this.globalErrorTrain = new ArrayList<>();
+        this.globalErrorTest = new ArrayList<>();
+        this.trainingSuccess = true;
     }
     
     //Getter and Setter
@@ -58,22 +70,37 @@ public class ErrorData {
         this.numIter = numIter;
     }
 
-    public ArrayList<Double> getGlobalError() {
-        return globalError;
+    public ArrayList<Double> getGlobalErrorTrain() {
+        return globalErrorTrain;
+    }
+    
+    public ArrayList<Double> getGlobalErrorTest() {
+        return globalErrorTest;
     }
 
     /**
-     * Sets value for global error at specified position
+     * Sets value for global error from testdata at specified position
      * @param globalError
-     * @param index 
      */
-    public void setGlobalErrorAt(double globalError, int index) {
-        this.globalError.set(index, globalError);
+    public void addGlobalErrorTest(double globalError){
+        this.globalErrorTest.add(globalError);
     }
     
+    /**
+     * Sets value for global error at specified position
+     * @param globalError
+     */
+    public void addGlobalErrorTrain(double globalError) {
+        this.globalErrorTrain.add(globalError);
+    }
     
+    public void setTrainingSuccss(boolean success){
+        this.trainingSuccess = success;
+    }
     
-    
+    public boolean isTrainingSuccess(){
+        return this.trainingSuccess;
+    }
     
     
 }

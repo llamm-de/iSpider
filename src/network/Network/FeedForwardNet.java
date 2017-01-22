@@ -70,7 +70,7 @@ public abstract class FeedForwardNet implements Network{
     /**
      * Learning rule for Trainingalgorithm of network
      */
-    protected LearningRule learningRule;
+    public LearningRule learningRule;
     
     /**
      * LearningType

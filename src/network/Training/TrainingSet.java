@@ -117,6 +117,12 @@ public class TrainingSet {
     public LinkedList<TrainingPattern> getTrainingPatterns() {
         return trainingPatterns;
     }
+
+    public LinkedList<TrainingPattern> getTestPatterns() {
+        return testPatterns;
+    }
+    
+    
     
     
 }

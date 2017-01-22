@@ -86,25 +86,30 @@ public class Backpropagation implements LearningRule{
 
       
    @Override     
-    public void applyRule(Network net, TrainingSet set) {
+    public ErrorData applyRule(Network net, TrainingSet set) {
         //Initialize iterator, globalError and HashMaps for weightIncrement and local gradient delta
         FeedForwardNet network = (FeedForwardNet) net;
         int iterator = 0;
-        double globalError = Double.MAX_VALUE;
+        ErrorData errorData = new ErrorData(); //Object for storing errordata
         HashMap<Synapse,Double> incrementMap = new HashMap<>();
         HashMap<Neuron, Double> deltaMap = new HashMap<>();
         
         //Loop until error is small enough or maxIter is reached
-        while(globalError > maxError || iterator < maxIter){
+        outerloop:
+        while(iterator < maxIter){
+            // set/reset error-variables
+            double globalErrorTrain = 0;
+            double globalErrorTest = 0;
             //Loop over all patterns
-            int patternCount = 1;
+            int patternCount = 0;
             for (TrainingPattern pattern : set.getTrainingPatterns()) {
+                //Count patterns 
+                patternCount++;
                 //Solve for pattern and compute error
                 double[] input = pattern.p;
-                network.solve(input);
-                globalError = errorFunction.compGlobalError(network.getOutput(), pattern.t);
-                
-                //Loop backwards over all layers except inputlayer
+                network.solve(input);        
+                                               
+                //Compute deltas and new weights (Loop backwards over all layers except inputlayer)
                 for (int i = (network.getLayers().size()-1); i > 0  ; i--) {
                     Layer currentLayer = network.getLayers().get(i);
                     //Loop over all neurons in layer
@@ -113,11 +118,11 @@ public class Backpropagation implements LearningRule{
                         //Compute derivation of activityfunction
                         DifferentiableFct activityFct = (DifferentiableFct) neuron.getActivityFunction();
                         double activityDeriv = activityFct.getDerivative(neuron.output);
-                        //Distinguish output or hidden layer and compute delta for neuron
-                        if(i == (network.getLayers().size()-1)){
+                        //Distinguish if output or hidden layer and compute delta for neuron
+                        if(i == (network.getLayers().size()-1)){    //output
                             double delta = activityDeriv*errorFunction.compDerivative(pattern.t[j], network.outputData[j]);
                             deltaMap.put(neuron, delta);
-                        }else{
+                        }else{                                      //hidden
                             double sumDelta = 0;
                             //Loop over all connected neurons in next layer
                             for(Synapse outSynapse : neuron.getOutSynapses()){
@@ -131,8 +136,9 @@ public class Backpropagation implements LearningRule{
                         for(Synapse inSynapse : neuron.getInSynapses()){
                             Neuron inNeuron = inSynapse.getInNeuron();
                             double weightIncrement = learningRate*deltaMap.get(neuron)*inNeuron.output;
+                            
                             //Distinguish: online or batch-learning
-                            if(incrementMap.isEmpty()){
+                            if(!incrementMap.containsKey(inSynapse)){
                                 incrementMap.put(inSynapse, weightIncrement);
                             }else{                                                      //batch
                                 double oldIncrement = incrementMap.get(inSynapse);
@@ -145,28 +151,62 @@ public class Backpropagation implements LearningRule{
                     
                 }//end backprop-loop
                 
-                //Check for learningtype and update weights
+                //Check for learningtype, update weights and compute globalError
                 if(network.isLearningOnline() || patternCount == set.getTrainingPatterns().size()){
+                    //update weights
                     this.updateWeights(network, incrementMap);
                     incrementMap.clear();
-                    deltaMap.clear();
+                    deltaMap.clear();                    
                 }
                 
                 //Shuffle pattern after every pattern shown once
-                patternCount++;
                 if(patternCount >= set.getTrainingPatterns().size()){
                     set.shufflePatterns();
                     patternCount = 1;
                 }
-                
+
+            }//end pattern-loop
+            
+            //compute global Error for all training- and testpatterns
+            for (TrainingPattern trainingPattern : set.getTrainingPatterns()) {
+                double[] inputErrorCalc = trainingPattern.p;
+                network.solve(inputErrorCalc);
+                double[] outputErrorCalc = network.getOutputData();
+                globalErrorTrain += this.errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t);   
             }
-                      
-        }
+            // Store error to errorobject
+            errorData.addGlobalErrorTrain(globalErrorTrain);
+
+            for(TrainingPattern testPattern : set.getTestPatterns()){
+               double[] inputErrorCalc = testPattern.p;
+               network.solve(inputErrorCalc);
+               double[] outputErrorCalc = network.getOutputData();
+               globalErrorTest += this.errorFunction.compGlobalError(outputErrorCalc, testPattern.t);
+            }
+            // Store error and set number of iterations in errordata-object
+            errorData.addGlobalErrorTest(globalErrorTest);
+            errorData.setNumIter(iterator);
+            
+            //check error and break out of loop if small enough
+            if (globalErrorTrain <= maxError){
+                break outerloop;
+            }
+            
+            iterator ++;         
+            
+        }//end iterator-loop
         
-    }
+        //check if error is still too big
+        if (errorData.getGlobalErrorTrain().get(iterator-1) > maxError){
+            errorData.setTrainingSuccss(false);
+        }
+    
+        return errorData;   
+        
+    }//end method
     
     /**
-     * Updates synaptic weights
+     * Updates synaptic weights of network from a HashMap
      * @param incrementMap
      * @param network
      */

@@ -24,6 +24,7 @@
 package network.Training;
 
 import network.Network.*;
+import data.ErrorData;
 
 /**
  * Interface for Learningrule
@@ -36,5 +37,5 @@ public interface LearningRule {
      * @param network
      * @param set
      */
-    public void applyRule(Network network, TrainingSet set);
+    public ErrorData applyRule(Network network, TrainingSet set);
 }

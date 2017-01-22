@@ -26,7 +26,9 @@ package Testfolder;
 import network.Network.*;
 import network.Training.*;
 
+import data.ErrorData;
 import tools.Function.*;
+import tools.*;
 
 /**
  * Testclass for backpropagation-algorithm
@@ -38,24 +40,77 @@ public class FunctionApproxTest {
     public static void main(String[] args) {
         
        //Initialize Network
+        System.out.print("Initializing Network...");
+        System.out.println("DONE!");
        int inNeurons = 1;
        int outNeurons = 1;
        int numLayers = 3;
        FullyConnectedFeedForward network = new FullyConnectedFeedForward(inNeurons, outNeurons, numLayers);
+       System.out.print("Assembling Network...");
        network.assembleNet();
+       System.out.println("DONE!");
+        System.out.print("Setting Activityfunction...");
        network.setAllActivityFcts(new HyperbolicTangentFct());
+        System.out.println("DONE!");
        
         
         
        //Get TrainingSet
+        System.out.print("Creating Training- and Testpattern...");
        double[] range = new double[2];
        range[0] = -10;
        range[1] = 10;
        TrainingSet trainingSet = SinusSet.createSet(100, range);
+        System.out.println("DONE!");
        
        
        //Train network
+        System.out.println("Learningalgorithm started...");
+       int maxIter = 1000;
+       double maxError = 0.01;
        
+       Backpropagation learningRule = (Backpropagation) network.learningRule;
+       //setting for learningtype
+       network.setLearningType(true);
+       if(network.isLearningOnline()){
+           System.out.println("Learningtype: ONLINE!");
+           System.out.println("...");
+       }else{
+           System.out.println("Learningtype: BATCH/OFFLINE!");
+           System.out.println("...");
+       }
+       learningRule.setMaxError(maxError);
+       learningRule.setMaxIter(maxIter);
+       
+       //read errordata
+       ErrorData errorData = learningRule.applyRule(network, trainingSet);
+       int numIter = errorData.getNumIter();
+       double[] errorTrain = ToolClass.listToArray(errorData.getGlobalErrorTrain());
+       double[] errorTest = ToolClass.listToArray(errorData.getGlobalErrorTest());
+             
+       
+       //check if training was successfull
+       if(errorData.isTrainingSuccess()){
+           System.out.println("Training successfull!");
+       }else{
+           System.out.println("Training NOT successfull!");
+           System.out.println("Error is still too big: " + errorTest[numIter-1]);
+       }
+       
+       //visualize results
+        System.out.println("");
+        System.out.println("Results are being displayed...");
+        
+        FunctionGraph graph = new FunctionGraph("Global error", "Iteration", "Error");
+        double[] iterVec = ToolClass.makeRangeArray(0, (numIter+1), 1);
+        graph.addOrUpdateSeries(iterVec, errorTrain, "Training error");
+        graph.addOrUpdateSeries(iterVec, errorTest, "Test error");
+        graph.plot(1000,1000);
+        
+        
+        
+        
+        
        
         
     }
