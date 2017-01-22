@@ -30,6 +30,8 @@ import data.ErrorData;
 import tools.Function.*;
 import tools.*;
 
+import java.util.LinkedList;
+
 /**
  * Testclass for backpropagation-algorithm
  * Tests, if network is able to learn to approximate a sinus function.
@@ -42,10 +44,10 @@ public class FunctionApproxTest {
        //Set parameters for test
        int inNeurons = 1;
        int outNeurons = 1;
-       int hiddenNeurons = 4;
+       int hiddenNeurons = 3;
        int numLayers = 3;
        double learningRate = 0.2;
-       int maxIter = 10000;
+       int maxIter = 3000;
        double maxError = 0.01;
    
        //Initialize Network
@@ -64,7 +66,7 @@ public class FunctionApproxTest {
        //Get TrainingSet
         System.out.print("Creating Training- and Testpattern...");
        double[] range = new double[2];
-       range[0] = -10;
+       range[0] = 0;
        range[1] = 10;
        //TrainingSet trainingSet = SinusSet.createSet(100, range);
        TrainingSet trainingSet = QuadraticFctSet.createSet(100, range);
@@ -106,7 +108,7 @@ public class FunctionApproxTest {
            System.out.println("Error is still too big: " + errorTest[numIter-1]);
        }
        
-       //visualize results
+       //visualize error
         System.out.println("");
         System.out.println("Results are being displayed...");
         
@@ -117,6 +119,30 @@ public class FunctionApproxTest {
         graph.setSeriesLinesAndShapesVisible("Training error", true, false);
         graph.setSeriesLinesAndShapesVisible("Test error", true, false);
         graph.plot(800,800);
+        
+        //visualize result
+        LinkedList<TrainingPattern> testPatterns = trainingSet.getTestPatterns();
+        double[] input = new double[testPatterns.size()];
+        double[] desiredOutput = new double[testPatterns.size()];
+        int iterator = 0;
+        for (TrainingPattern testPattern : testPatterns) {
+            input[iterator] = testPattern.p[0];
+            desiredOutput[iterator] = testPattern.t[0];
+            iterator++;
+        }
+        double[] calcOutput = new double[testPatterns.size()];
+        for (int i = 0; i < testPatterns.size(); i++) {
+            double[] in = new double[1];
+            in[0] = input[i];
+            network.solve(in);
+            calcOutput[i] = network.outputData[0];
+        }
+        FunctionGraph graph2 = new FunctionGraph("x²", "x", "y");
+        graph2.addOrUpdateSeries(input, calcOutput, "Network");
+        graph2.addOrUpdateSeries(input, desiredOutput, "Analytic");
+        graph2.setSeriesLinesAndShapesVisible("Network", true, false);
+        graph2.setSeriesLinesAndShapesVisible("Analytic", true, false);
+        graph2.plot(800,800);
         
         
         System.out.println("");

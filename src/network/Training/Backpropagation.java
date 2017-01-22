@@ -172,7 +172,7 @@ public class Backpropagation implements LearningRule{
                 double[] inputErrorCalc = trainingPattern.p;
                 network.solve(inputErrorCalc);
                 double[] outputErrorCalc = network.getOutputData();
-                globalErrorTrain += this.errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t);   
+                globalErrorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t);   
             }
             // Store error to errorobject
             errorData.addGlobalErrorTrain(globalErrorTrain);
@@ -181,7 +181,7 @@ public class Backpropagation implements LearningRule{
                double[] inputErrorCalc = testPattern.p;
                network.solve(inputErrorCalc);
                double[] outputErrorCalc = network.getOutputData();
-               globalErrorTest += this.errorFunction.compGlobalError(outputErrorCalc, testPattern.t);
+               globalErrorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.t);
             }
             // Store error and set number of iterations in errordata-object
             errorData.addGlobalErrorTest(globalErrorTest);
