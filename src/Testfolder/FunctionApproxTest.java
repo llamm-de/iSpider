@@ -27,6 +27,7 @@ import network.Network.*;
 import network.Training.*;
 
 import data.ErrorData;
+import java.awt.Color;
 import tools.Function.*;
 import tools.*;
 
@@ -34,7 +35,7 @@ import java.util.LinkedList;
 
 /**
  * Testclass for backpropagation-algorithm
- * Tests, if network is able to learn to approximate a sinus function.
+ * Tests, if network is able to learn to approximate a scalar-function.
  * @author LammLukas
  */
 public class FunctionApproxTest {
@@ -42,13 +43,18 @@ public class FunctionApproxTest {
     public static void main(String[] args) {
         
        //Set parameters for test
+       int whichFct = 2;    //1:sinus; 2:x²
        int inNeurons = 1;
        int outNeurons = 1;
        int hiddenNeurons = 3;
        int numLayers = 3;
-       double learningRate = 0.2;
-       int maxIter = 3000;
+       double learningRate = 0.01;
+       int maxIter = 10000;
        double maxError = 0.01;
+       boolean learningType = true; //true: Online; false: Offline
+       double[] range = new double[2];
+       range[0] = -0.95;
+       range[1] = 0.95;
    
        //Initialize Network
         System.out.print("Initializing Network...");
@@ -65,12 +71,37 @@ public class FunctionApproxTest {
         
        //Get TrainingSet
         System.out.print("Creating Training- and Testpattern...");
-       double[] range = new double[2];
-       range[0] = 0;
-       range[1] = 10;
-       //TrainingSet trainingSet = SinusSet.createSet(100, range);
-       TrainingSet trainingSet = QuadraticFctSet.createSet(100, range);
+       
+        String title = new String();
+        TrainingSet trainingSet = new TrainingSet();
+        if(whichFct == 1){
+            trainingSet = SinusSet.createSet(100, range);
+            title = "Sin(x)";
+        }else{
+            trainingSet = QuadraticFctSet.createSet(100, range);
+            title = "x²";
+        }
+       
         System.out.println("DONE!");
+        
+        // Initialize Data for visualisation
+        LinkedList<TrainingPattern> testPatterns = trainingSet.getTestPatterns();
+        double[] input = new double[testPatterns.size()];
+        double[] desiredOutput = new double[testPatterns.size()];
+        int iterator = 0;
+        for (TrainingPattern testPattern : testPatterns) {
+            input[iterator] = testPattern.p[0];
+            desiredOutput[iterator] = testPattern.t[0];
+            iterator++;
+        }
+        //get data from untrained network
+        double[] untrainedOutput = new double[testPatterns.size()];
+        for (int i = 0; i < testPatterns.size(); i++) {
+            double[] in = new double[1];
+            in[0] = input[i];
+            network.solve(in);
+            untrainedOutput[i] = network.outputData[0];
+        }
        
        
        //Train network      
@@ -81,8 +112,9 @@ public class FunctionApproxTest {
         System.out.println("Setting learningrate to: " + learningRate);
        learningRule.setLearingRate(learningRate);
        
+       
        //setting for learningtype
-       network.setLearningType(true);
+       network.setLearningType(learningType);
        if(network.isLearningOnline()){
            System.out.println("Learningtype: ONLINE!");
            System.out.println("...");
@@ -121,27 +153,23 @@ public class FunctionApproxTest {
         graph.plot(800,800);
         
         //visualize result
-        LinkedList<TrainingPattern> testPatterns = trainingSet.getTestPatterns();
-        double[] input = new double[testPatterns.size()];
-        double[] desiredOutput = new double[testPatterns.size()];
-        int iterator = 0;
-        for (TrainingPattern testPattern : testPatterns) {
-            input[iterator] = testPattern.p[0];
-            desiredOutput[iterator] = testPattern.t[0];
-            iterator++;
-        }
-        double[] calcOutput = new double[testPatterns.size()];
+        double[] trainedOutput = new double[testPatterns.size()];
         for (int i = 0; i < testPatterns.size(); i++) {
             double[] in = new double[1];
             in[0] = input[i];
             network.solve(in);
-            calcOutput[i] = network.outputData[0];
+            trainedOutput[i] = network.outputData[0];
         }
-        FunctionGraph graph2 = new FunctionGraph("x²", "x", "y");
-        graph2.addOrUpdateSeries(input, calcOutput, "Network");
+        FunctionGraph graph2 = new FunctionGraph(title, "x", "y");
+        graph2.addOrUpdateSeries(input, untrainedOutput, "Network (untrained)");
+        graph2.addOrUpdateSeries(input, trainedOutput, "Network (trained)");
         graph2.addOrUpdateSeries(input, desiredOutput, "Analytic");
-        graph2.setSeriesLinesAndShapesVisible("Network", true, false);
+        graph2.setSeriesLinesAndShapesVisible("Network (untrained)", true, false);
+        graph2.setSeriesLinesAndShapesVisible("Network (trained)", true, false);
         graph2.setSeriesLinesAndShapesVisible("Analytic", true, false);
+        graph2.setSeriesColor("Network (untrained)", Color.MAGENTA);
+        graph2.setSeriesColor("Network (trained)", Color.BLUE);
+        graph2.setSeriesColor("Analytic", Color.RED);
         graph2.plot(800,800);
         
         

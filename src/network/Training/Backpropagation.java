@@ -189,6 +189,7 @@ public class Backpropagation implements LearningRule{
             
             //check error and break out of loop if small enough
             if (globalErrorTrain <= maxError){
+                errorData.setTrainingSuccss(true);
                 break outerloop;
             }
             
@@ -196,10 +197,7 @@ public class Backpropagation implements LearningRule{
             
         }//end iterator-loop
         
-        //check if error is still too big
-        if (errorData.getGlobalErrorTrain().get(iterator-1) > maxError){
-            errorData.setTrainingSuccss(false);
-        }
+      
     
         return errorData;   
         

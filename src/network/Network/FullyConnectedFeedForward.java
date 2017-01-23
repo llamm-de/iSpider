@@ -173,7 +173,8 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
                     Neuron currentNeuron = neurons.get(j);
                     //Pass inputdata to inputneurons
                     if(!currentNeuron.hasInputSynapses()){
-                        currentNeuron.input = this.inputData[j];
+                        InputNeuron currNeuron = (InputNeuron) currentNeuron;
+                        currNeuron.input = this.inputData[j];
                     }
                     //Pass data through network and store in outputData
                     if(currentNeuron.hasOutputSynapses()){
@@ -191,7 +192,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
                 }
             }
         }else{
-        throw new UnsupportedOperationException("Not enough input arguments for network."); 
+        throw new UnsupportedOperationException("Dimension Mismatch! InputDatat not same size as Inputlayer of network."); 
         }
     }
 

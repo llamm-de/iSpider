@@ -64,11 +64,6 @@ public class Neuron {
     public double output;
     
     /**
-     * Inputvalue for inputneuron
-     */
-    public double input;
-
-    /**
      * Constructor
      * predefined: 
      * - activityFunction: SigmoidFunction
@@ -280,21 +275,6 @@ public class Neuron {
     public void setInputFunction(InputFct inputFunction) {
         this.inputFunction = inputFunction;
     }
-    
-    /**
-     * Setter for inputvalues
-     * @return 
-     */
-    public double getInput() {
-        return input;
-    }
-
-    /**
-     * Getter for inputvalues
-     * @param input 
-     */
-    public void setInput(double input) {
-        this.input = input;
-    }
+   
     
 }

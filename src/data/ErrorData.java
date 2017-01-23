@@ -57,7 +57,7 @@ public class ErrorData {
     public ErrorData() {
         this.globalErrorTrain = new ArrayList<>();
         this.globalErrorTest = new ArrayList<>();
-        this.trainingSuccess = true;
+        this.trainingSuccess = false;
     }
     
     //Getter and Setter

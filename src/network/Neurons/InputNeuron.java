@@ -33,6 +33,10 @@ import tools.Function.*;
  */
 public class InputNeuron extends Neuron{
     
+     /**
+     * Inputvalue for inputneuron
+     */
+    public double input;
        
     /**
      * Constructor for InputNeuron
@@ -58,6 +62,22 @@ public class InputNeuron extends Neuron{
     @Override
     public void addInputSynapse(Synapse synapse) {
         //DO NOTHING!
+    }
+    
+        /**
+     * Setter for inputvalues
+     * @return 
+     */
+    public double getInput() {
+        return input;
+    }
+
+    /**
+     * Getter for inputvalues
+     * @param input 
+     */
+    public void setInput(double input) {
+        this.input = input;
     }
     
 }
