@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/RandomTest.java</file>
             <file>file:/home/lukas/NetBeansProjects/iSpider/src/network/Training/Backpropagation.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/SinusSet.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/network/Network/Network.java</file>
             <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/FunctionApproxTest.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/network/Network/FeedForwardNet.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/tools/FunctionGraph.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/data/ScaleTool.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/tools/Function/HyperbolicTangentFct.java</file>
         </group>
     </open-files>
 </project-private>

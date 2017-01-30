@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import network.Training.*;
 import network.Layer.*;
 import network.Neurons.*;
-import network.Connections.Synapse;
+import data.ScaleTool;
 import tools.Function.ScalarFct;
 
 /**
@@ -62,6 +62,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
         this.onlineLearning = true;
+        this.scaleTool = new ScaleTool();
     }
     
         /**
@@ -83,6 +84,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
         this.onlineLearning = true;
+        this.scaleTool = new ScaleTool();
     }
     
     /**
@@ -104,6 +106,7 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         this.inputData = new double[numInputNeurons];
         this.outputData = new double[numOutputNeurons];
         this.onlineLearning = true;
+        this.scaleTool = new ScaleTool();
     }
     
     @Override
@@ -155,46 +158,6 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
         
     }
 
-    @Override
-    public void solve(double[] input) {
-        //set inputdata
-        this.setInputData(input);
-        
-        //fire bias neuron
-        LinkedList<Synapse> biasSynapses = bias.getOutSynapses();
-        for (Synapse biasSynapse : biasSynapses) {
-            biasSynapse.signal = bias.output;
-        }
-        //Solve layer by layer
-        if(inputData.length == numInputNeurons){
-            for (Layer layer : layers) {        
-                LinkedList<Neuron> neurons = layer.getNeurons();
-                for (int j = 0; j < neurons.size(); j++) {
-                    Neuron currentNeuron = neurons.get(j);
-                    //Pass inputdata to inputneurons
-                    if(!currentNeuron.hasInputSynapses()){
-                        InputNeuron currNeuron = (InputNeuron) currentNeuron;
-                        currNeuron.input = this.inputData[j];
-                    }
-                    //Pass data through network and store in outputData
-                    if(currentNeuron.hasOutputSynapses()){
-                        currentNeuron.compActivity();
-                        currentNeuron.compOutput();
-                        LinkedList<Synapse> currOutSynapses = currentNeuron.getOutSynapses();
-                        for (Synapse currOutSynapse : currOutSynapses) {
-                            currOutSynapse.signal = currentNeuron.output;
-                        }
-                    }else{
-                        currentNeuron.compActivity();
-                        currentNeuron.compOutput();
-                        this.outputData[j] = currentNeuron.output;
-                    }
-                }
-            }
-        }else{
-        throw new UnsupportedOperationException("Dimension Mismatch! InputDatat not same size as Inputlayer of network."); 
-        }
-    }
 
 
     @Override

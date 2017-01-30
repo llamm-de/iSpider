@@ -23,7 +23,7 @@
  */
 package tools.Function;
 
-import java.lang.Math;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Class for computation of a sigmoidfunction including its derivative
@@ -60,7 +60,7 @@ public class SigmoidFct extends DifferentiableFct implements ScalarFct{
      */    
     @Override
     public double getValue(double value){
-        return (1/(1 + Math.exp(-value*k)));
+        return (1/(1 + FastMath.exp(-value*k)));
     }
     
     /**

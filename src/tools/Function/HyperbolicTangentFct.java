@@ -23,6 +23,8 @@
  */
 package tools.Function;
 
+import org.apache.commons.math3.util.FastMath;
+
 /**
  * Hyperbolic tangent and its first derivative
  * @author LammLukas
@@ -32,12 +34,12 @@ public class HyperbolicTangentFct extends DifferentiableFct{
     
     @Override
     public double getValue(double value) {
-        return Math.tanh(value);
+        return FastMath.tanh(value);
     }
 
     @Override
     public double getDerivative(double value) {
-        return (1-Math.pow(Math.tanh(value), 2));
+        return (1-FastMath.pow(FastMath.tanh(value), 2));
     }
     
     

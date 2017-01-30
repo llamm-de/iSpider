@@ -36,6 +36,7 @@ public interface LearningRule {
      * Applies Learningrule to network
      * @param network
      * @param set
+     * @return ErrorData-object with stored data for visualizing error.
      */
     public ErrorData applyRule(Network network, TrainingSet set);
 }

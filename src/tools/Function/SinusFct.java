@@ -23,6 +23,8 @@
  */
 package tools.Function;
 
+import org.apache.commons.math3.util.FastMath;
+
 /**
  *
  * @author LammLukas
@@ -31,12 +33,12 @@ public class SinusFct extends DifferentiableFct{
 
     @Override
     public double getValue(double value) {
-        return Math.sin(value);
+        return FastMath.sin(value);
     }
 
     @Override
     public double getDerivative(double value) {
-        return Math.cos(value);
+        return FastMath.cos(value);
     }
     
     

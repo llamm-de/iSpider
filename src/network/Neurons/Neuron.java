@@ -36,6 +36,7 @@ import java.util.LinkedList;
 public class Neuron {
    
     // Attributes
+
        
     /**
      * Input and outputlinks.

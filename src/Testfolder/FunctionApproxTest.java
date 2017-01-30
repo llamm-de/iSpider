@@ -43,18 +43,18 @@ public class FunctionApproxTest {
     public static void main(String[] args) {
         
        //Set parameters for test
-       int whichFct = 2;    //1:sinus; 2:x²
+       int whichFct = 1;    //1:sinus; 2:x²
        int inNeurons = 1;
        int outNeurons = 1;
-       int hiddenNeurons = 3;
+       int hiddenNeurons = 6;
        int numLayers = 3;
        double learningRate = 0.01;
        int maxIter = 10000;
-       double maxError = 0.01;
+       double maxError = 0.035;
        boolean learningType = true; //true: Online; false: Offline
        double[] range = new double[2];
-       range[0] = -0.95;
-       range[1] = 0.95;
+       range[0] = -2;
+       range[1] = 2;
    
        //Initialize Network
         System.out.print("Initializing Network...");
@@ -75,7 +75,7 @@ public class FunctionApproxTest {
         String title = new String();
         TrainingSet trainingSet = new TrainingSet();
         if(whichFct == 1){
-            trainingSet = SinusSet.createSet(100, range);
+            trainingSet = SinusSet.createSet(1000, range);
             title = "Sin(x)";
         }else{
             trainingSet = QuadraticFctSet.createSet(100, range);
@@ -126,7 +126,7 @@ public class FunctionApproxTest {
        learningRule.setMaxIter(maxIter);
        
        //read errordata
-       ErrorData errorData = learningRule.applyRule(network, trainingSet);
+       ErrorData errorData = network.trainNet(trainingSet);
        int numIter = errorData.getNumIter();
        double[] errorTrain = ToolClass.listToArray(errorData.getGlobalErrorTrain());
        double[] errorTest = ToolClass.listToArray(errorData.getGlobalErrorTest());

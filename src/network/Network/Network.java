@@ -26,7 +26,8 @@ package network.Network;
 import java.util.LinkedList;
 import network.Neurons.*;
 import network.Training.*;
-import network.Layer.*;
+import data.ErrorData;
+import data.ScaleTool;
 import tools.Function.ScalarFct;
      
 /**
@@ -48,8 +49,10 @@ public interface Network {
     /**
      * Trains the neuronal network
      */
-    public void trainNet(TrainingSet set);
+    public ErrorData trainNet(TrainingSet set);
     
+            
+            
     /**
      * Getter for Outputdata
      * @return 
@@ -85,6 +88,12 @@ public interface Network {
      * @param activityFct 
      */
     public void setAllActivityFcts(ScalarFct activityFct);
+    
+    /**
+     * 
+     * @return 
+     */
+    public ScaleTool getScaleTool();
     
 
 }

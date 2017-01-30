@@ -28,6 +28,8 @@ import network.Layer.*;
 import network.Training.*;
 import network.Neurons.*;
 //import network.Connections.*;
+import data.*;
+import network.Connections.Synapse;
 
 
 /**
@@ -85,27 +87,95 @@ public abstract class FeedForwardNet implements Network{
     protected boolean onlineLearning;
     
     /**
+     * Object for scaling data to range of values supported
+     */
+    protected ScaleTool scaleTool;
+    
+    /**
      * BiasNeuron
      */
     protected BiasNeuron bias;
+    
 
     @Override
     public abstract void assembleNet();
 
+    /**
+     * Solves network for a given input.
+     * @param input Input parameters to be solved by the network.
+     */
     @Override
-    public abstract void solve(double[] input);
+    public void solve(double[] input){
+        //Scale inputdata
+        if(scaleTool.isInitialized()){
+            double[] scaledInput = scaleTool.scaleInput(input);
+            //set inputdata
+            this.setInputData(scaledInput);
+        }else {
+            this.setInputData(input);
+        }
+        
+        
+        
+        //fire bias neuron
+        LinkedList<Synapse> biasSynapses = bias.getOutSynapses();
+        for (Synapse biasSynapse : biasSynapses) {
+            biasSynapse.signal = bias.output;
+        }
+        //Solve layer by layer
+        if(inputData.length == numInputNeurons){
+            for (Layer layer : layers) {        
+                LinkedList<Neuron> neurons = layer.getNeurons();
+                for (int j = 0; j < neurons.size(); j++) {
+                    Neuron currentNeuron = neurons.get(j);
+                    //Pass inputdata to inputneurons
+                    if(!currentNeuron.hasInputSynapses()){
+                        InputNeuron currNeuron = (InputNeuron) currentNeuron;
+                        currNeuron.input = this.inputData[j];
+                    }
+                    //Pass data through network and store in outputData
+                    if(currentNeuron.hasOutputSynapses()){
+                        currentNeuron.compActivity();
+                        currentNeuron.compOutput();
+                        LinkedList<Synapse> currOutSynapses = currentNeuron.getOutSynapses();
+                        for (Synapse currOutSynapse : currOutSynapses) {
+                            currOutSynapse.signal = currentNeuron.output;
+                        }
+                    }else{
+                        currentNeuron.compActivity();
+                        currentNeuron.compOutput();
+                        this.outputData[j] = currentNeuron.output;
+                    }
+                }
+            }
+        }else{
+        throw new UnsupportedOperationException("Dimension Mismatch! InputDatat not same size as Inputlayer of network."); 
+        }
+        
+        //unscale outputdata
+        if(scaleTool.isInitialized()){
+            this.outputData = scaleTool.unscaleOutput(outputData);
+        }
+        
+    }
      
     /**
      * Trains the network with data from a TrainingSet, visualizes results and error.
-     * @param set TrainingSet
+     * @param set TrainingSet the network will be trained on.
      */
     @Override
-    public void trainNet(TrainingSet set){
+    public ErrorData trainNet(TrainingSet set){
+        
+        //Initialize scalingfactor for network and apply to trainingset
+        scaleTool.initializeFactor(this, set);
         
         //Apply learningRule
-        learningRule.applyRule(this, set);
+        ErrorData errorData = learningRule.applyRule(this, set);
         
-    }
+        
+        return errorData;
+        
+    }    
     
     
     /**
@@ -207,5 +277,11 @@ public abstract class FeedForwardNet implements Network{
     public void setLearningType(boolean onlineLearning) {
         this.onlineLearning = onlineLearning;
     }   
+
+    @Override
+    public ScaleTool getScaleTool() {
+        return scaleTool;
+    }
+    
     
 }
