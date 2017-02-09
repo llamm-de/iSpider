@@ -164,16 +164,13 @@ public abstract class FeedForwardNet implements Network{
      * @param set TrainingSet the network will be trained on.
      */
     @Override
-    public ErrorData trainNet(TrainingSet set){
+    public void trainNet(TrainingSet set){
         
         //Initialize scalingfactor for network and apply to trainingset
         scaleTool.initializeFactor(this, set);
         
         //Apply learningRule
-        ErrorData errorData = learningRule.applyRule(this, set);
-        
-        
-        return errorData;
+        learningRule.applyRule(this, set);
         
     }    
     

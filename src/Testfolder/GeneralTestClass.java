@@ -23,10 +23,7 @@
  */
 package Testfolder;
 
-import network.Network.*;
-import tools.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 /**
  *
  * @author LammLukas
@@ -35,22 +32,16 @@ public class GeneralTestClass {
     
     public static void main(String[] args) {
         
-        double d1 = 10;
-        double d2 = 112;
-        double d3 = 3293;
-        
         ArrayList<Double> list = new ArrayList<>();
-        list.add(d3);
-        list.add(d2);
-        list.add(d1);
         
-        double[] array = ToolClass.listToArray(list);
-        
+        list.add(10.1);
         System.out.println(list);
-        System.out.println(Arrays.toString(array));
+        list.clear();
+        list.add(2.12);
+        System.out.println(list);
+        list.add(3.12);
+        System.out.println(list);
         
-        double[] intArray = ToolClass.makeRangeArray(0, 10, 1);
-        System.out.println(Arrays.toString(intArray));
         
     }
     

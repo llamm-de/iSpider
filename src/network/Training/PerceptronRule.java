@@ -25,16 +25,22 @@ package network.Training;
 
 import network.Network.Network;
 import data.ErrorData;
+import java.util.HashMap;
 
 /**
  * Perceptron learningrule for single-layer perceptron.
  * TO BE IMPLEMENTED
  * @author LammLukas
  */
-public class PerceptronRule implements LearningRule{
+public class PerceptronRule extends LearningRule{
 
     @Override
-    public ErrorData applyRule(Network network, TrainingSet set) {
+    public void applyRule(Network net, TrainingSet set) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateWeights(Network net, HashMap incrementMap) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

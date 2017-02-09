@@ -24,19 +24,115 @@
 package network.Training;
 
 import network.Network.*;
-import data.ErrorData;
+import tools.Function.ErrorFunction;
+
+import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Interface for Learningrule
  * @author LammLukas
  */
-public interface LearningRule {
+public abstract class LearningRule {
+    
+    /**
+     * Learningrate
+     */
+    protected double learningRate;
+    
+    /**
+     * Number of iterations made by algorithm
+     */
+    protected int iterations;
+    
+    /**
+     * Global error computed from trainingset made at each iteration
+     */
+    protected ArrayList<Double> globalErrorTrain;
+    
+    /**
+     * Global error computed from testset made after each iteration
+     */
+    protected ArrayList<Double> globalErrorTest;
+    
+    /**
+     * Errorfunction
+     */
+    protected ErrorFunction errorFunction;
+    
+    /**
+     * Criterion for breaking iteration-loop
+     */
+    protected BreakCriterion breakCriterion;
+    
+    /**
+     * Shows, whther or not training was successfull
+     */
+    protected boolean TrainingSuccess;
 
+    
     /**
      * Applies Learningrule to network
-     * @param network
+     * @param net
      * @param set
-     * @return ErrorData-object with stored data for visualizing error.
      */
-    public ErrorData applyRule(Network network, TrainingSet set);
+    public abstract void applyRule(Network net, TrainingSet set);
+    
+    /**
+     * Updates synaptic weights of network
+     * @param net
+     * @param incrementMap 
+     */
+    protected abstract void updateWeights(Network net, HashMap incrementMap);
+
+    
+    //Getter
+    
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public int getIterations() {
+        return iterations;
+    }
+
+    public ArrayList<Double> getGlobalErrorTrain() {
+        return globalErrorTrain;
+    }
+
+    public ArrayList<Double> getGlobalErrorTest() {
+        return globalErrorTest;
+    }
+
+    public ErrorFunction getErrorFunction() {
+        return errorFunction;
+    }
+
+    public BreakCriterion getBreakCriterion() {
+        return breakCriterion;
+    }
+
+    public boolean isTrainingSuccess() {
+        return TrainingSuccess;
+    }
+        
+    //Setter
+
+    public void setLearingRate(double learningRate) {
+        if (learningRate <= 1 && learningRate > 0){
+            this.learningRate = learningRate;
+        }else{
+            this.learningRate = 1;
+        }
+    }
+
+    public void setErrorFunction(ErrorFunction errorFunction) {
+        this.errorFunction = errorFunction;
+    }
+
+    public void setBreakCriterion(BreakCriterion breakCriterion) {
+        this.breakCriterion = breakCriterion;
+    }
+    
+    
 }

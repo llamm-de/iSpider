@@ -24,7 +24,7 @@ public class ToolClass {
     public static double[] makeRangeArray(double minVal, double maxVal, double step){
         int numEntries = (int)((maxVal- minVal)/step);
         double[] array = new double[numEntries];
-        double value = minVal;
+        double value = minVal-step;
             for(int i = 0; i < numEntries; i++){
                 value += step;
                 array[i] = value;

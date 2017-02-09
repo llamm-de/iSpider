@@ -49,7 +49,7 @@ public interface Network {
     /**
      * Trains the neuronal network
      */
-    public ErrorData trainNet(TrainingSet set);
+    public void trainNet(TrainingSet set);
     
             
             

@@ -27,87 +27,112 @@ import network.Network.*;
 import network.Connections.*;
 import network.Neurons.*;
 import network.Layer.*;
-import data.ErrorData;
 
 import tools.Function.*;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class for Backpropagation of error.
- * Implementation of interface LearningRule.
+ * Implementation of abstract class LearningRule.
  * @author LammLukas
  */
-public class Backpropagation implements LearningRule{
+public class Backpropagation extends LearningRule{
     
+        
     /**
-     * Learningrate
+     * Denominator for delta
+     * Case: Online -> denominator = 1
+     * Case: Batch -> denominator = number of TrainingPatterns
      */
-    private double learningRate;
+    private int denominator;
     
-    /**
-     * Maximum error allowed
-     */
-    private double maxError;
-    
-    /**
-     * Maximum number of iterations
-     */
-    private double maxIter;
-    
-    /**
-     * Errorfunction
-     */
-    private ErrorFunction errorFunction;
-
     /**
      * Empty Constructor
      * Learningrate predefined as 1.
      * Errorfunction predefined as MeanSquaredError.
+     * Breakcriterion predefined as Error and Iteration.
      */
     public Backpropagation() {
         this.learningRate = 1;
         this.errorFunction = new MeanSquaredError();
+        this.TrainingSuccess = false;
+        this.globalErrorTrain = new ArrayList<>();
+        this.globalErrorTest = new ArrayList<>();
+        this.breakCriterion = new BreakErrorAndIteration(this);
     }
 
     /**
-     * Constructor with variable learningrate
-     * @param learningRate
+     * Constructor with variable errorfunction
      * @param errorFunction
      */
-    public Backpropagation(double learningRate, ErrorFunction errorFunction) {
-        if (learningRate <= 1 && learningRate > 0){
-            this.learningRate = learningRate;
-        }else{
-            this.learningRate = 1;
-        }
+    public Backpropagation(ErrorFunction errorFunction) {
+        this.learningRate = 1;
         this.errorFunction = errorFunction;
+        this.TrainingSuccess = false;
+        this.globalErrorTrain = new ArrayList<>();
+        this.globalErrorTest = new ArrayList<>();
+        this.breakCriterion = new BreakErrorAndIteration(this);
     }
 
       
-   @Override     
-    public ErrorData applyRule(Network net, TrainingSet set) {
-        //Initialize iterator, globalError and HashMaps for weightIncrement and local gradient delta
+    @Override     
+    public void applyRule(Network net, TrainingSet set) {
+        //Cast network
         FeedForwardNet network = (FeedForwardNet) net;
-        int iterator = 0;
-        ErrorData errorData = new ErrorData(); //Object for storing errordata
-        HashMap<Synapse,Double> incrementMap = new HashMap<>();
-        HashMap<Neuron, Double> deltaMap = new HashMap<>();
         
-        //Loop until error is small enough or maxIter is reached
-        outerloop:
-        while(iterator < maxIter){
+        //Hashmaps for delta and increment
+        HashMap<Synapse,Double> incrementMap = new HashMap<>();
+        HashMap<Neuron,Double> deltaMap = new HashMap<>();
+               
+        //Set denominator for computatin of delta
+        if(!network.isLearningOnline()){
+            denominator = set.getTrainingPatterns().size();
+        }else{
+            denominator = 1;
+        }
+        
+        //Set iterator and initial error
+        this.iterations = 1;
+        this.globalErrorTrain.add(Double.MAX_VALUE);
+        this.globalErrorTest.add(Double.MAX_VALUE);
+        double errorTrain = 0;
+        double errorTest = 0;
+        
+        
+        //Loop until breaking-criterion is reached
+        while(!breakCriterion.isReached()){
             // set/reset error-variables
-            double globalErrorTrain = 0;
-            double globalErrorTest = 0;
+            if(iterations == 1){
+                this.globalErrorTest.clear();
+                this.globalErrorTrain.clear();
+                //Compute initial error for testpatterns
+                for(TrainingPattern testPattern : set.getTestPatterns()){
+                   double[] testInput = testPattern.p;
+                   network.solve(testInput);
+                   errorTest += errorFunction.compGlobalError(testInput, testPattern.t)/set.getTestPatterns().size();
+                }
+                globalErrorTest.add(0, errorTest);
+            }
+            
             //Loop over all patterns
             int patternCount = 0;
             for (TrainingPattern pattern : set.getTrainingPatterns()) {
                 //Count patterns 
                 patternCount++;
-                //Solve for pattern and compute error
+                                
+                //Solve for pattern
                 double[] input = pattern.p;
-                network.solve(input);        
+                network.solve(input); 
+                
+                //Compute and accumulate initial error for trainingpatterns
+                if(iterations == 1){
+                    errorTrain += errorFunction.compGlobalError(network.getOutputData(),pattern.t)/denominator;
+                    if(patternCount >= set.getTrainingPatterns().size()){
+                        globalErrorTrain.add(0, errorTrain);
+                    }
+                }
                                                
                 //Compute deltas and new weights (Loop backwards over all layers except inputlayer)
                 for (int i = (network.getLayers().size()-1); i > 0  ; i--) {
@@ -120,7 +145,7 @@ public class Backpropagation implements LearningRule{
                         double activityDeriv = activityFct.getDerivative(neuron.output);
                         //Distinguish if output or hidden layer and compute delta for neuron
                         if(i == (network.getLayers().size()-1)){    //output
-                            double delta = activityDeriv*errorFunction.compDerivative(network.outputData[j], pattern.t[j]);
+                            double delta = activityDeriv*errorFunction.compDerivative(network.outputData[j], pattern.t[j])/denominator;
                             deltaMap.put(neuron, delta);
                         }else{                                      //hidden
                             double sumDelta = 0;
@@ -138,7 +163,7 @@ public class Backpropagation implements LearningRule{
                             double weightIncrement = learningRate*deltaMap.get(neuron)*inNeuron.output;
                             
                             //Distinguish: online or batch-learning
-                            if(!incrementMap.containsKey(inSynapse)){
+                            if(!incrementMap.containsKey(inSynapse)){                   //online
                                 incrementMap.put(inSynapse, weightIncrement);
                             }else{                                                      //batch
                                 double oldIncrement = incrementMap.get(inSynapse);
@@ -164,60 +189,57 @@ public class Backpropagation implements LearningRule{
                     set.shufflePatterns();
                     patternCount = 1;
                 }
-
+                
             }//end pattern-loop
             
             //compute global Error for all training- and testpatterns
+            errorTrain = 0; //reset
             for (TrainingPattern trainingPattern : set.getTrainingPatterns()) {
                 double[] inputErrorCalc = trainingPattern.p;
                 network.solve(inputErrorCalc);
                 double[] outputErrorCalc = network.getOutputData();
-                globalErrorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t);
-                globalErrorTrain = globalErrorTrain;//*network.getScaleTool().getScaleFactor()[1];
+                errorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t)/set.getTrainingPatterns().size();
+                
             }
-            // Store error to errorobject
-            errorData.addGlobalErrorTrain(globalErrorTrain);
+            globalErrorTrain.add(errorTrain);
 
+            //reset
+            errorTest = 0;
             for(TrainingPattern testPattern : set.getTestPatterns()){
                double[] inputErrorCalc = testPattern.p;
                network.solve(inputErrorCalc);
                double[] outputErrorCalc = network.getOutputData();
-               globalErrorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.t);
-               globalErrorTest = globalErrorTest;//*network.getScaleTool().getScaleFactor()[1];
+               errorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.t)/set.getTestPatterns().size();
+               
             }
-            // Store error and set number of iterations in errordata-object
-            errorData.addGlobalErrorTest(globalErrorTest);
-            errorData.setNumIter(iterator);
+            globalErrorTest.add(errorTest);
             
             //check error and break out of loop if small enough
-            if (globalErrorTrain <= maxError){
-                errorData.setTrainingSuccss(true);
-                break outerloop;
+            if (globalErrorTrain.get(iterations) <= breakCriterion.getMaxError()){
+                this.TrainingSuccess = true;
+                break;
             }
             
-            iterator ++;         
+            iterations++;         
             
-        }//end iterator-loop
-        
-        
-    
-        return errorData;   
+        }//end iterator-loop  
         
     }//end method
     
     /**
      * Updates synaptic weights of network from a HashMap
-     * @param incrementMap
-     * @param network
+     * @param incrementMap Map of increments for synaptic connections
+     * @param net Network which should be updated
      */
-    private void updateWeights(Network net, HashMap incrementMap){
+    @Override
+    public void updateWeights(Network net, HashMap incrementMap){
         //Loop over all layers, neurons and synaptic outputconnections
         FeedForwardNet network = (FeedForwardNet) net;
         for (Layer layer : network.getLayers()) {
             for(Neuron neuron : layer.getNeurons()){
                 for(Synapse outSynapse : neuron.getOutSynapses()){
                     double newWeight;
-                    newWeight = (outSynapse.getWeight()+ (double) incrementMap.get(outSynapse));
+                    newWeight = (outSynapse.getWeight() + (double) incrementMap.get(outSynapse));
                     outSynapse.setWeight(newWeight);
                 }
             }
@@ -229,38 +251,5 @@ public class Backpropagation implements LearningRule{
             outSynapse.setWeight(newWeight);
         }
     }
-    
-    //Getter and setter
-    public double getLearningRate() {
-        return learningRate;
-    }
-
-    public void setLearingRate(double learningRate) {
-        if (learningRate <= 1 && learningRate > 0){
-            this.learningRate = learningRate;
-        }else{
-            this.learningRate = 1;
-        }
-    }
-
-    public void setMaxError(double maxError) {
-        this.maxError = maxError;
-    }
-
-    public void setMaxIter(double maxIter) {
-        this.maxIter = maxIter;
-    }
-
-    public ErrorFunction getErrorFunction() {
-        return errorFunction;
-    }
-
-    public void setErrorFunction(ErrorFunction errorFunction) {
-        this.errorFunction = errorFunction;
-    }
-    
-    
-    
-    
     
 }
