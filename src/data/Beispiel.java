@@ -6,7 +6,7 @@ import java.io.*;
 public class Beispiel {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
-		NdTimeSeries ts = readNdTimeSeriesObject("/Users/LammLukas/documents/UNI/alleDaten.jbo");
+		NdTimeSeries ts = readNdTimeSeriesObject("/home/lukas/Dokumente/UNI/alleDaten.jbo");
 		System.out.println(ts);
 
 	}

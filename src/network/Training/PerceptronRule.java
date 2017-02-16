@@ -23,8 +23,9 @@
  */
 package network.Training;
 
+import data.DataSet;
 import network.Network.Network;
-import data.ErrorData;
+
 import java.util.HashMap;
 
 /**
@@ -35,7 +36,7 @@ import java.util.HashMap;
 public class PerceptronRule extends LearningRule{
 
     @Override
-    public void applyRule(Network net, TrainingSet set) {
+    public void applyRule(Network net, DataSet set) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

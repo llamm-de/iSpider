@@ -204,7 +204,10 @@ public class FullyConnectedFeedForward extends FeedForwardNet{
     }
     
     
-    
+    @Override
+    public String toString() {
+        return "Fully-connected feed-forward-network";
+    }
     
     
     

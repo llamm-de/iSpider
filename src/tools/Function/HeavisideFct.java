@@ -59,5 +59,9 @@ public class HeavisideFct implements ScalarFct{
         
     }
     
+    @Override
+    public String toString() {
+        return "Heaviside-function";
+    }
     
 }

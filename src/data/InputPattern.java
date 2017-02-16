@@ -21,51 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Testfolder;
-
-import java.util.Arrays;
-import data.*;
-import tools.FunctionGraph;
-import java.util.LinkedList;
+package data;
 
 /**
- * Short test for sinusset
+ *
  * @author lukas
  */
-public class SinusSetTest {
-    
-    public static void main(String[] args) {
-        double[] range = new double[2];
-        range[0] = -10;
-        range[1] = 10;
-        int numPatterns = 100;
-        
-        // Create set
-        DataSet sinSet = SinusSet.createSet(numPatterns, range);
-        
-        //Create graph
-        FunctionGraph graph = new FunctionGraph("SinusTest","x","y");
-        
-        //extract data from set for plotting
-        LinkedList<Pattern> patterns = sinSet.getPatterns();
-        int i = 0;
-        double[] xVal = new double[numPatterns];
-        double[] yVal = new double[numPatterns];
-        for (Pattern pattern : patterns) {
-            xVal[i] = pattern.getIn()[0];
-            yVal[i] = pattern.getOut()[0];
-            
-            i++;
-        }
-        
-        //plot data
-        graph.addOrUpdateSeries(xVal, yVal, "sinusPattern");
-        graph.plot(500, 500);
-        
-        System.out.println(Arrays.toString(xVal));
-        System.out.println(Arrays.toString(yVal));
-        
-        
+public class InputPattern implements Pattern{
+
+    /**
+     * Array of inputdata for network
+     */
+    public double[] input;
+
+    /**
+     * Empty constructor
+     */
+    public InputPattern() {
     }
+    
+    /**
+     * Constrctor
+     * @param input 
+     */
+    public InputPattern(double[] input) {
+        this.input = input;
+    }
+    
+    //Getter and Setter
+        
+    @Override
+    public double[] getIn() {
+        return input;
+    }
+
+    @Override
+    public void setIn(double[] in) {
+        this.input = in;
+    }
+
+    @Override
+    public double[] getOut() {
+        return null;
+    }
+
+    @Override
+    public void setOut(double[] out) {
+        // Do Nothing!
+    }
+    
+    
     
 }

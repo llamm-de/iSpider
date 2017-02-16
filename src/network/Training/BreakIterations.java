@@ -23,7 +23,7 @@
  */
 package network.Training;
 
-import data.ErrorData;
+
 
 /**
  * Class wich breaks iterative-loop after number of iterations reached a limit value.
@@ -81,6 +81,11 @@ public class BreakIterations implements BreakCriterion{
     @Override
     public void setMaxError(double maxError) {
         this.maxError= maxError;
+    }
+
+    @Override
+    public String toString() {
+        return "Maximum of iterations";
     }
     
     

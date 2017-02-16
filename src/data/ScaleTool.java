@@ -24,8 +24,7 @@
 package data;
 
 import network.Network.*;
-import network.Training.TrainingSet;
-import network.Training.TrainingPattern;
+
 import tools.Function.*;
 
 import java.util.LinkedList;
@@ -41,7 +40,7 @@ public class ScaleTool {
     /**
      * Scalingfactor
      */
-    private double[] scaleFactor;
+    private final double[] scaleFactor;
     
     /**
      * Boolean for checking whether scaleFactor is already initialized or not.
@@ -53,7 +52,7 @@ public class ScaleTool {
      */
     public ScaleTool() {
         this.initialized = false;
-        this. scaleFactor = new double[2];
+        this.scaleFactor = new double[2];
     }
     
     /**
@@ -66,7 +65,7 @@ public class ScaleTool {
      * @param net Network for which the scalefactor should be computed.
      * @param set The set of trainingdata the scale should be fitted on.
      */
-    public void initializeFactor(Network net, TrainingSet set){
+    public void initializeFactor(Network net, DataSet set){
         //check if already initialized
         if(!initialized){
             //initialize maximal value
@@ -77,14 +76,14 @@ public class ScaleTool {
             double[] range = this.findRange(net);
             
             //find max value for output in training- and testpatterns and raise by 20 percent
-            LinkedList<TrainingPattern> trainingPatterns = set.getTrainingPatterns();
-            LinkedList<TrainingPattern> testPatterns = set.getTestPatterns();
+            LinkedList<Pattern> Patterns = set.getPatterns();
+            
             //Trainingpatterns
-            for (TrainingPattern trainingPattern : trainingPatterns) {
-                for (double output : trainingPattern.t) {
+            for (Pattern pattern : Patterns) {
+                for (double output : pattern.getOut()) {
                     if(FastMath.abs(output) > maxOutValue){
                         maxOutValue = output;
-                        for(double input : trainingPattern.p){
+                        for(double input : pattern.getIn()){
                             if(FastMath.abs(input) > maxInValue){
                                 maxInValue = input;
                             }
@@ -92,19 +91,7 @@ public class ScaleTool {
                     }
                 }
             }
-            //Testpattern
-            for (TrainingPattern testPattern : testPatterns) {
-                for (double output : testPattern.t) {
-                    if(FastMath.abs(output) > maxOutValue){
-                        maxOutValue = output;
-                        for(double input : testPattern.p){
-                            if(FastMath.abs(input) > maxInValue){
-                                maxInValue = input;
-                            }
-                        }
-                    }
-                }
-            }
+            
             maxOutValue = maxOutValue*1.2;
             maxInValue = maxInValue*1.2;
 

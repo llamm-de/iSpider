@@ -23,11 +23,14 @@
  */
 package network.Training;
 
+import data.DataSet;
+import data.*;
 import network.Network.*;
 import tools.Function.ErrorFunction;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Interface for Learningrule
@@ -76,7 +79,7 @@ public abstract class LearningRule {
      * @param net
      * @param set
      */
-    public abstract void applyRule(Network net, TrainingSet set);
+    public abstract void applyRule(Network net, DataSet set);
     
     /**
      * Updates synaptic weights of network
@@ -84,6 +87,30 @@ public abstract class LearningRule {
      * @param incrementMap 
      */
     protected abstract void updateWeights(Network net, HashMap incrementMap);
+    
+    /**
+     * This function extracts one-fourth of the given patterns to be a testpattern 
+     * and stores them in a testset.
+     * This method must be called in each implementation of the applyRule method.
+     * @param set
+     * @return Array of DataSets. [0]: trainingSet; [1]: testSet
+     */
+    protected DataSet[] extractTestSet(DataSet set){
+        DataSet[] sets = new DataSet[2];
+        DataSet testSet = new DataSet();
+        Random random = new Random();
+        for (int i = 0; i < set.getPatterns().size()/10; i++) {
+                int index = random.nextInt(set.getPatterns().size());
+                TrainingPattern testPattern = (TrainingPattern) set.getPatterns().get(index);
+                set.removePattern(testPattern);
+                testSet.addPattern(testPattern);
+        }
+        
+        sets[0] = set;
+        sets[1] = testSet;
+        
+        return sets;
+    }
 
     
     //Getter

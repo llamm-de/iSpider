@@ -24,8 +24,8 @@
 package Testfolder;
 
 import java.util.Random;
-import network.Training.TrainingPattern;
-import network.Training.TrainingSet;
+import data.*;
+
 import tools.Function.*;
 
 /**
@@ -34,10 +34,10 @@ import tools.Function.*;
  */
 public class QuadraticFctSet {
     
-    public static TrainingSet createSet(int numPatterns, double[] range){
+    public static DataSet createSet(int numPatterns, double[] range){
        
         //initialize datastructures
-        TrainingSet quadraticSet = new TrainingSet();
+        DataSet quadraticSet = new DataSet();
         QuadraticFct quadraticFct = new QuadraticFct();
         Random random = new Random();
         double rangeMin = range[0];
@@ -63,25 +63,13 @@ public class QuadraticFctSet {
             
             //compute desired output from input and create pattern
             output[0] = quadraticFct.getValue(input[0]);
-            trainingPattern.setP(input);
-            trainingPattern.setT(output);
+            trainingPattern.setIn(input);
+            trainingPattern.setOut(output);
                         
             //store trainingpatterns
-            quadraticSet.addTrainingPattern(trainingPattern);
+            quadraticSet.addPattern((Pattern) trainingPattern);
             
-            //store random input for checking in testpattern
-            allInputs[i] = input[0];
-            allOutputs[i] = output[0];
-            //create testpattern
-            if(i%2 == 0){
-                //get random input
-                input[0] = rangeMin + (rangeMax - rangeMin)*random.nextDouble();
-                //compute desired output from input and create pattern
-                output[0] = quadraticFct.getValue(input[0]);
-                testPattern.setP(input);
-                testPattern.setT(output);
-                quadraticSet.addTestPattern(testPattern);
-            }
+            
            
         }      
         return quadraticSet;

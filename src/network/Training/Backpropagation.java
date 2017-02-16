@@ -23,6 +23,8 @@
  */
 package network.Training;
 
+import data.DataSet;
+import data.Pattern;
 import network.Network.*;
 import network.Connections.*;
 import network.Neurons.*;
@@ -78,9 +80,14 @@ public class Backpropagation extends LearningRule{
 
       
     @Override     
-    public void applyRule(Network net, TrainingSet set) {
+    public void applyRule(Network net, DataSet set) {
         //Cast network
         FeedForwardNet network = (FeedForwardNet) net;
+        
+        //Extract testpatterns from dataset
+        DataSet[] sets = this.extractTestSet(set);
+        DataSet trainingSet = sets[0];
+        DataSet testSet = sets[1];
         
         //Hashmaps for delta and increment
         HashMap<Synapse,Double> incrementMap = new HashMap<>();
@@ -88,52 +95,43 @@ public class Backpropagation extends LearningRule{
                
         //Set denominator for computatin of delta
         if(!network.isLearningOnline()){
-            denominator = set.getTrainingPatterns().size();
+            denominator = trainingSet.getPatterns().size();
         }else{
             denominator = 1;
         }
         
         //Set iterator and initial error
         this.iterations = 1;
-        this.globalErrorTrain.add(Double.MAX_VALUE);
-        this.globalErrorTest.add(Double.MAX_VALUE);
         double errorTrain = 0;
         double errorTest = 0;
+        //Compute initial error for training- and testpatterns
+        for(Pattern testPattern : testSet.getPatterns()){
+           double[] testInput = testPattern.getIn();
+           network.solve(testInput);
+           errorTest += errorFunction.compGlobalError(network.getOutputData(), testPattern.getOut())/testSet.getPatterns().size();
+        }
+        globalErrorTest.add(0, errorTest);
+        for(Pattern trainingPattern : trainingSet.getPatterns()){
+            double[] trainingInput = trainingPattern.getIn();
+            network.solve(trainingInput);
+            errorTrain += errorFunction.compGlobalError(network.getOutputData(),trainingPattern.getOut())/trainingSet.getPatterns().size();
+        }
+        globalErrorTrain.add(0, errorTrain);
         
         
         //Loop until breaking-criterion is reached
         while(!breakCriterion.isReached()){
-            // set/reset error-variables
-            if(iterations == 1){
-                this.globalErrorTest.clear();
-                this.globalErrorTrain.clear();
-                //Compute initial error for testpatterns
-                for(TrainingPattern testPattern : set.getTestPatterns()){
-                   double[] testInput = testPattern.p;
-                   network.solve(testInput);
-                   errorTest += errorFunction.compGlobalError(testInput, testPattern.t)/set.getTestPatterns().size();
-                }
-                globalErrorTest.add(0, errorTest);
-            }
-            
+                        
             //Loop over all patterns
             int patternCount = 0;
-            for (TrainingPattern pattern : set.getTrainingPatterns()) {
+            for (Pattern pattern : trainingSet.getPatterns()) {
                 //Count patterns 
                 patternCount++;
                                 
                 //Solve for pattern
-                double[] input = pattern.p;
+                double[] input = pattern.getIn();
                 network.solve(input); 
-                
-                //Compute and accumulate initial error for trainingpatterns
-                if(iterations == 1){
-                    errorTrain += errorFunction.compGlobalError(network.getOutputData(),pattern.t)/denominator;
-                    if(patternCount >= set.getTrainingPatterns().size()){
-                        globalErrorTrain.add(0, errorTrain);
-                    }
-                }
-                                               
+                                                               
                 //Compute deltas and new weights (Loop backwards over all layers except inputlayer)
                 for (int i = (network.getLayers().size()-1); i > 0  ; i--) {
                     Layer currentLayer = network.getLayers().get(i);
@@ -145,7 +143,7 @@ public class Backpropagation extends LearningRule{
                         double activityDeriv = activityFct.getDerivative(neuron.output);
                         //Distinguish if output or hidden layer and compute delta for neuron
                         if(i == (network.getLayers().size()-1)){    //output
-                            double delta = activityDeriv*errorFunction.compDerivative(network.outputData[j], pattern.t[j])/denominator;
+                            double delta = activityDeriv*errorFunction.compDerivative(network.outputData[j], pattern.getOut()[j])/denominator;
                             deltaMap.put(neuron, delta);
                         }else{                                      //hidden
                             double sumDelta = 0;
@@ -177,7 +175,7 @@ public class Backpropagation extends LearningRule{
                 }//end backprop-loop
                 
                 //Check for learningtype, update weights and compute globalError
-                if(network.isLearningOnline() || patternCount == set.getTrainingPatterns().size()){
+                if(network.isLearningOnline() || patternCount == trainingSet.getPatterns().size()){
                     //update weights
                     this.updateWeights(network, incrementMap);
                     incrementMap.clear();
@@ -185,8 +183,8 @@ public class Backpropagation extends LearningRule{
                 }
                 
                 //Shuffle pattern after every pattern shown once
-                if(patternCount >= set.getTrainingPatterns().size()){
-                    set.shufflePatterns();
+                if(patternCount >= trainingSet.getPatterns().size()){
+                    trainingSet.shufflePatterns();
                     patternCount = 1;
                 }
                 
@@ -194,22 +192,22 @@ public class Backpropagation extends LearningRule{
             
             //compute global Error for all training- and testpatterns
             errorTrain = 0; //reset
-            for (TrainingPattern trainingPattern : set.getTrainingPatterns()) {
-                double[] inputErrorCalc = trainingPattern.p;
+            for (Pattern trainingPattern : trainingSet.getPatterns()) {
+                double[] inputErrorCalc = trainingPattern.getIn();
                 network.solve(inputErrorCalc);
                 double[] outputErrorCalc = network.getOutputData();
-                errorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.t)/set.getTrainingPatterns().size();
+                errorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.getOut())/trainingSet.getPatterns().size();
                 
             }
             globalErrorTrain.add(errorTrain);
 
             //reset
             errorTest = 0;
-            for(TrainingPattern testPattern : set.getTestPatterns()){
-               double[] inputErrorCalc = testPattern.p;
+            for(Pattern testPattern : testSet.getPatterns()){
+               double[] inputErrorCalc = testPattern.getIn();
                network.solve(inputErrorCalc);
                double[] outputErrorCalc = network.getOutputData();
-               errorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.t)/set.getTestPatterns().size();
+               errorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.getOut())/testSet.getPatterns().size();
                
             }
             globalErrorTest.add(errorTest);
@@ -251,5 +249,11 @@ public class Backpropagation extends LearningRule{
             outSynapse.setWeight(newWeight);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Backpropagation";
+    }
+    
     
 }

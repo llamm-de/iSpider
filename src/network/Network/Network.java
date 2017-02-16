@@ -23,10 +23,11 @@
  */
 package network.Network;
 
+import data.DataSet;
 import java.util.LinkedList;
 import network.Neurons.*;
 import network.Training.*;
-import data.ErrorData;
+
 import data.ScaleTool;
 import tools.Function.ScalarFct;
      
@@ -43,13 +44,15 @@ public interface Network {
     
     /**
      * Solver for network
+     * @param input
      */
     public void solve(double[] input);
     
     /**
      * Trains the neuronal network
+     * @param set
      */
-    public void trainNet(TrainingSet set);
+    public void trainNet(DataSet set);
     
             
             
@@ -94,6 +97,13 @@ public interface Network {
      * @return 
      */
     public ScaleTool getScaleTool();
+    
+    /**
+     * Returns identifier string
+     * @return 
+     */
+    @Override
+    public String toString();
     
 
 }

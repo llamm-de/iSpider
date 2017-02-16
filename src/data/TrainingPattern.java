@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package network.Training;
+package data;
 
 /**
  * Class for a pattern of trainingdata
  * @author LammLukas
  */
-public class TrainingPattern {
+public class TrainingPattern implements Pattern{
     
     //Attributes
     /**
@@ -59,19 +59,19 @@ public class TrainingPattern {
     }
 
     //Getter and Setter
-    public double[] getP() {
+    public double[] getIn() {
         return p;
     }
 
-    public void setP(double[] p) {
+    public void setIn(double[] p) {
         this.p = p;
     }
 
-    public double[] getT() {
+    public double[] getOut() {
         return t;
     }
 
-    public void setT(double[] t) {
+    public void setOut(double[] t) {
         this.t = t;
     }
     

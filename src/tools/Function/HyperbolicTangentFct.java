@@ -41,6 +41,11 @@ public class HyperbolicTangentFct extends DifferentiableFct{
     public double getDerivative(double value) {
         return (1-FastMath.pow(FastMath.tanh(value), 2));
     }
+
+    @Override
+    public String toString() {
+        return "Hyperbolic tangent";
+    }
     
     
     

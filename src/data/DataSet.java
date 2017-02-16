@@ -21,51 +21,72 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package Testfolder;
+package data;
 
-import java.util.Arrays;
-import data.*;
-import tools.FunctionGraph;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
- * Short test for sinusset
+ * Interface for Datasets
  * @author lukas
  */
-public class SinusSetTest {
+public class DataSet {
     
-    public static void main(String[] args) {
-        double[] range = new double[2];
-        range[0] = -10;
-        range[1] = 10;
-        int numPatterns = 100;
-        
-        // Create set
-        DataSet sinSet = SinusSet.createSet(numPatterns, range);
-        
-        //Create graph
-        FunctionGraph graph = new FunctionGraph("SinusTest","x","y");
-        
-        //extract data from set for plotting
-        LinkedList<Pattern> patterns = sinSet.getPatterns();
-        int i = 0;
-        double[] xVal = new double[numPatterns];
-        double[] yVal = new double[numPatterns];
-        for (Pattern pattern : patterns) {
-            xVal[i] = pattern.getIn()[0];
-            yVal[i] = pattern.getOut()[0];
-            
-            i++;
-        }
-        
-        //plot data
-        graph.addOrUpdateSeries(xVal, yVal, "sinusPattern");
-        graph.plot(500, 500);
-        
-        System.out.println(Arrays.toString(xVal));
-        System.out.println(Arrays.toString(yVal));
-        
+    //Attributes
+    /**
+     * List of trainingspatterns
+     */
+    private LinkedList<Pattern> Patterns;
+    
+       
+    /**
+     * Empty Constructor
+     */
+    public DataSet() {
+        this.Patterns = new LinkedList<>();
         
     }
+
+    /**
+     * Constructor with predefines trainingpatterns
+     * and empty testpatterns
+     * @param trainingPatterns 
+     */
+    public DataSet(LinkedList<Pattern> trainingPatterns) {
+        this.Patterns = trainingPatterns;
+        
+    }
+    
+      
+    /**
+     * Shuffles patterns
+     */
+    public void shufflePatterns(){
+        Collections.shuffle(Patterns);
+    }
+    
+    /**
+     * Adds pattern to set
+     * @param pattern 
+     */
+    public void addPattern(Pattern pattern){
+        this.Patterns.add(pattern);
+    }
+    
+    /**
+     * Removes pattern from set
+     * @param pattern 
+     */
+    public void removePattern(Pattern pattern){
+        this.Patterns.remove(pattern);
+    }
+
+    //Getter and Setter
+    public LinkedList<Pattern> getPatterns() {
+        return Patterns;
+    }   
+    
+    
+    
     
 }

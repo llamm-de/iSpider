@@ -23,49 +23,40 @@
  */
 package Testfolder;
 
-import java.util.Arrays;
-import data.*;
-import tools.FunctionGraph;
-import java.util.LinkedList;
+import data.DataSet;
+import data.IO.WindWaveReader;
+import helper.NdTimeSeries;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.swing.JFileChooser;
 
 /**
- * Short test for sinusset
+ *
  * @author lukas
  */
-public class SinusSetTest {
+public class ReaderTest {
     
-    public static void main(String[] args) {
-        double[] range = new double[2];
-        range[0] = -10;
-        range[1] = 10;
-        int numPatterns = 100;
+    public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
         
-        // Create set
-        DataSet sinSet = SinusSet.createSet(numPatterns, range);
+        WindWaveReader reader = new WindWaveReader();
         
-        //Create graph
-        FunctionGraph graph = new FunctionGraph("SinusTest","x","y");
-        
-        //extract data from set for plotting
-        LinkedList<Pattern> patterns = sinSet.getPatterns();
-        int i = 0;
-        double[] xVal = new double[numPatterns];
-        double[] yVal = new double[numPatterns];
-        for (Pattern pattern : patterns) {
-            xVal[i] = pattern.getIn()[0];
-            yVal[i] = pattern.getOut()[0];
-            
-            i++;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Choose a file to open...");
+        //Open dialog and choose file
+        int response = fileChooser.showOpenDialog(null);
+        File file = null;
+        if(response == JFileChooser.APPROVE_OPTION){
+            file = fileChooser.getSelectedFile();
+        }else{
+            System.out.println("No File Chosen!");
         }
+                
+        NdTimeSeries timeSeries = reader.readFile(file);
+        long[] timeRange = new long[]{(long) 1.1018592E12, (long) 1.104555E12};
+        DataSet set = reader.createTrainingSet(timeSeries, timeRange);
         
-        //plot data
-        graph.addOrUpdateSeries(xVal, yVal, "sinusPattern");
-        graph.plot(500, 500);
-        
-        System.out.println(Arrays.toString(xVal));
-        System.out.println(Arrays.toString(yVal));
-        
+        System.out.println(set);
         
     }
-    
 }

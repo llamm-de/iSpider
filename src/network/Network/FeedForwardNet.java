@@ -23,6 +23,7 @@
  */
 package network.Network;
 
+import data.DataSet;
 import java.util.LinkedList;
 import network.Layer.*;
 import network.Training.*;
@@ -164,7 +165,7 @@ public abstract class FeedForwardNet implements Network{
      * @param set TrainingSet the network will be trained on.
      */
     @Override
-    public void trainNet(TrainingSet set){
+    public void trainNet(DataSet set){
         
         //Initialize scalingfactor for network and apply to trainingset
         scaleTool.initializeFactor(this, set);
@@ -279,6 +280,12 @@ public abstract class FeedForwardNet implements Network{
     public ScaleTool getScaleTool() {
         return scaleTool;
     }
+
+    @Override
+    public String toString() {
+        return "Feed-forward-network";
+    }
+    
     
     
 }

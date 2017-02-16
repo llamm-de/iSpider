@@ -82,6 +82,12 @@ public class BreakErrorAndIteration implements BreakCriterion{
     public void setMaxError(double maxError) {
         this.maxError = maxError;
     }
+
+    @Override
+    public String toString() {
+        return "Maximum error and iterations.";
+    }
+    
     
     
 }

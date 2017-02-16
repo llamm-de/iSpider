@@ -89,5 +89,8 @@ public class SigmoidFct extends DifferentiableFct implements ScalarFct{
         this.k = k;
     }
     
-    
+    @Override
+    public String toString() {
+        return "Sigmoid-function";
+    }
 }
