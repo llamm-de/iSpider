@@ -63,20 +63,24 @@ public abstract class JboReader implements Reader<NdTimeSeries>{
                       
     }
     
-    /**
-     * Abstract method for creating a trainingset out of a time series.
-     * @param timeSeries given time series
-     * @param timeRange given range of time
-     * @return 
-     */
-    public abstract DataSet createTrainingSet(NdTimeSeries timeSeries, long[] timeRange);
     
     /**
-     * Abstract method for creating inputdata out of a time series
-     * @param timeSeries
+     * Abstract method for creating a trainingset out of a time series.
+     * @param map
      * @return 
      */
-    public abstract HashMap createInputData(NdTimeSeries timeSeries);
+    public abstract DataSet createTrainingSet(HashMap map);
+    
+    
+    /**
+     * Extracts data with time from timeseries
+     * @param timeSeries
+     * @param mode
+     * @return 
+     */
+    public abstract HashMap getDataWithTime(NdTimeSeries timeSeries, String mode);
+    
+
     
     
     

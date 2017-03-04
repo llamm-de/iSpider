@@ -108,13 +108,13 @@ public class Backpropagation extends LearningRule{
         for(Pattern testPattern : testSet.getPatterns()){
            double[] testInput = testPattern.getIn();
            network.solve(testInput);
-           errorTest += errorFunction.compGlobalError(network.getOutputData(), testPattern.getOut())/testSet.getPatterns().size();
+           errorTest += errorFunction.compGlobalError(network.getOutput(), testPattern.getOut())/testSet.getPatterns().size();
         }
         globalErrorTest.add(0, errorTest);
         for(Pattern trainingPattern : trainingSet.getPatterns()){
             double[] trainingInput = trainingPattern.getIn();
             network.solve(trainingInput);
-            errorTrain += errorFunction.compGlobalError(network.getOutputData(),trainingPattern.getOut())/trainingSet.getPatterns().size();
+            errorTrain += errorFunction.compGlobalError(network.getOutput(),trainingPattern.getOut())/trainingSet.getPatterns().size();
         }
         globalErrorTrain.add(0, errorTrain);
         
@@ -136,7 +136,7 @@ public class Backpropagation extends LearningRule{
                 for (int i = (network.getLayers().size()-1); i > 0  ; i--) {
                     Layer currentLayer = network.getLayers().get(i);
                     //Loop over all neurons in layer
-                    int j = 0;
+                    int  j = 0;
                     for (Neuron neuron : currentLayer.getNeurons()) {
                         //Compute derivation of activityfunction
                         DifferentiableFct activityFct = (DifferentiableFct) neuron.getActivityFunction();
@@ -195,7 +195,7 @@ public class Backpropagation extends LearningRule{
             for (Pattern trainingPattern : trainingSet.getPatterns()) {
                 double[] inputErrorCalc = trainingPattern.getIn();
                 network.solve(inputErrorCalc);
-                double[] outputErrorCalc = network.getOutputData();
+                double[] outputErrorCalc = network.getOutput();
                 errorTrain += errorFunction.compGlobalError(outputErrorCalc, trainingPattern.getOut())/trainingSet.getPatterns().size();
                 
             }
@@ -206,7 +206,7 @@ public class Backpropagation extends LearningRule{
             for(Pattern testPattern : testSet.getPatterns()){
                double[] inputErrorCalc = testPattern.getIn();
                network.solve(inputErrorCalc);
-               double[] outputErrorCalc = network.getOutputData();
+               double[] outputErrorCalc = network.getOutput();
                errorTest += errorFunction.compGlobalError(outputErrorCalc, testPattern.getOut())/testSet.getPatterns().size();
                
             }
@@ -230,7 +230,7 @@ public class Backpropagation extends LearningRule{
      * @param net Network which should be updated
      */
     @Override
-    public void updateWeights(Network net, HashMap incrementMap){
+    protected void updateWeights(Network net, HashMap incrementMap){
         //Loop over all layers, neurons and synaptic outputconnections
         FeedForwardNet network = (FeedForwardNet) net;
         for (Layer layer : network.getLayers()) {

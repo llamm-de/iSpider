@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/data/IO/JboReader.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/data/IO/Writer.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/network/Neurons/Neuron.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/GeneralTestClass.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/data/Pattern.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/FunctionApproxTest.java</file>
-            <file>file:/home/lukas/NetBeansProjects/iSpider/src/data/IO/Reader.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/Testfolder/WaveApproxTest.java</file>
+            <file>file:/home/lukas/NetBeansProjects/iSpider/src/tools/FunctionGraph.java</file>
         </group>
     </open-files>
 </project-private>

@@ -26,7 +26,6 @@ package network.Network;
 import data.DataSet;
 import java.util.LinkedList;
 import network.Neurons.*;
-import network.Training.*;
 
 import data.ScaleTool;
 import tools.Function.ScalarFct;

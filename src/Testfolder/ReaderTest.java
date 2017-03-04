@@ -29,6 +29,7 @@ import helper.NdTimeSeries;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 
 /**
@@ -54,7 +55,8 @@ public class ReaderTest {
                 
         NdTimeSeries timeSeries = reader.readFile(file);
         long[] timeRange = new long[]{(long) 1.1018592E12, (long) 1.104555E12};
-        DataSet set = reader.createTrainingSet(timeSeries, timeRange);
+        HashMap map = reader.getDataWithTime(timeSeries, "training");
+        DataSet set = reader.createTrainingSet(map);
         
         System.out.println(set);
         

@@ -32,4 +32,26 @@ public class ToolClass {
         return array;
     }
     
+    public static double getMax(double[] a){
+        double result = 0;
+        
+        for (double value : a) {
+            if(result < value){
+                result = value;
+            }
+        }
+        return result;
+    }
+    
+    public static double getMin(double[] a){
+        double result = 0;
+        
+        for (double value : a) {
+            if(result > value){
+                result = value;
+            }
+        }
+        return result;
+    }
+    
 }

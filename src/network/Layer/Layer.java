@@ -89,7 +89,7 @@ public class Layer {
      * Removes single neuron from from layer by object itself
      * @param neuron 
      */
-    public void removeSingleNeuron(Neuron neuron){
+    public void removeNeuron(Neuron neuron){
         if(this.neurons.contains(neuron)){
             this.neurons.remove(neuron);
         }

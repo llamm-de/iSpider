@@ -43,7 +43,7 @@ public abstract class FeedForwardNet implements Network{
     /**
      * List of layers in network
      */
-    LinkedList<Layer> layers;
+    protected LinkedList<Layer> layers;
     
     /**
      * Number of inputneurons for network
@@ -239,11 +239,13 @@ public abstract class FeedForwardNet implements Network{
         return inputData;
     }
 
+    @Override
     public void setInputData(double[] inputData) {
         this.inputData = inputData;
     }
 
-    public double[] getOutputData() {
+    @Override
+    public double[] getOutput() {
         return outputData;
     }
 
